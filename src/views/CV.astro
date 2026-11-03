@@ -1,9 +1,9 @@
 ---
-// Web özgeçmiş: tamamen profil, lab defteri ve yayın verisinden üretilir; yazdırınca A4 CV olur.
+// Web özgeçmiş: tamamen profil ve yayın verisinden üretilir; yazdırınca A4 CV olur.
 import Base from '../layouts/Base.astro';
 import profile from '../data/profile.json';
 import { href, formatDate, pick, useTranslations, type Lang } from '../i18n/ui';
-import { getNotebook, getPublications } from '../lib/content';
+import { getPublications } from '../lib/content';
 import { profileLinks } from '../lib/links';
 
 interface Props {
@@ -17,9 +17,6 @@ const education = profile.timeline
 const experience = profile.timeline
   .filter((e) => e.track === 'experience')
   .sort((a, b) => b.start - a.start);
-const activities = (await getNotebook()).filter((e) =>
-  ['course', 'workshop', 'conference', 'certificate', 'talk'].includes(e.data.kind),
-);
 const pubs = await getPublications();
 const skills: string[] = (profile as Record<string, any>)[`skills_${lang}`] ?? profile.skills_tr;
 const siteUrl = Astro.site ? new URL(href(lang), Astro.site).toString().replace(/\/$/, '') : '';
@@ -105,28 +102,6 @@ const years = (e: { start: number; end: number | null }) => `${e.start}–${e.en
       <h2 class="mono">{t('cv.focus')}</h2>
       <p class="focus">{skills.join(' · ')}</p>
     </section>
-
-    {
-      activities.length > 0 && (
-        <section class="block" data-locus={t('cv.activities')}>
-          <h2 class="mono">{t('cv.activities')}</h2>
-          <ul class="rows">
-            {activities.map((e) => (
-              <li>
-                <span class="k mono">{e.data.date}</span>
-                <div>
-                  <strong>{pick(e.data, 'title', lang)}</strong>
-                  <span class="sub">
-                    {t(`kind.${e.data.kind}`)}
-                    {pick(e.data, 'note', lang) && ` · ${pick(e.data, 'note', lang)}`}
-                  </span>
-                </div>
-              </li>
-            ))}
-          </ul>
-        </section>
-      )
-    }
 
     {
       pubs.length > 0 && (

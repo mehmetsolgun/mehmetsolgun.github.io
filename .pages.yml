@@ -68,30 +68,6 @@ content:
           - { name: github, label: GitHub URL, type: string }
       - { name: google_verification, label: Google Search Console doğrulama kodu, type: string, description: 'Search Console > HTML etiketi yöntemindeki content="..." değeri' }
 
-  # ---------- Lab defteri ----------
-  - name: notebook
-    label: Lab defteri
-    type: collection
-    path: src/content/notebook
-    format: yaml
-    filename: '{year}-{month}-{day}-{primary}.yml'
-    view:
-      fields: [title_tr, date, kind]
-      primary: title_tr
-      default: { sort: date, order: desc }
-    fields:
-      - { name: title_tr, label: Başlık (TR), type: string, required: true }
-      - { name: title_en, label: Başlık (EN), type: string }
-      - { name: date, label: Tarih, type: string, required: true, description: 'Bildiğin kadarını yaz: 2026, 2026-09 ya da 2026-11-03' }
-      - name: kind
-        label: Tür
-        type: select
-        options: { values: [milestone, course, workshop, conference, certificate, talk, note] }
-      - { name: note_tr, label: Kısa not (TR), type: text }
-      - { name: note_en, label: Kısa not (EN), type: text }
-      - { name: link, label: Bağlantı, type: string }
-      - { name: file, label: Belge (sertifika PDF vb.), type: file }
-
   # ---------- Yayınlar ----------
   - name: publications
     label: Yayınlar

@@ -18,7 +18,6 @@ export const getStaticPaths = (async () => {
       ['publications', 'chr4', t('nav.publications'), t('pubs.title')],
       ['blog', 'chr5', 'blog', t('blog.lead')],
       ['contact', 'chr6', t('nav.contact'), t('contact.lead')],
-      ['notebook', 'chr7', t('nav.notebook'), t('notebook.lead')],
       ['cv', 'chr8', 'cv', t('cv.title')],
       ['404', 'chrX', '404', t('404.title')],
     ];

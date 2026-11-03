@@ -61,26 +61,4 @@ const publications = defineCollection({
   }),
 });
 
-// Lab defteri: tarihli kısa kayıtlar, dil bağımsız: src/content/notebook/<id>.yml
-// Tarih bilindiği kadar yazılır: 2026, 2026-09 ya da 2026-11-03.
-const notebook = defineCollection({
-  loader: glob({ pattern: '**/*.{yml,yaml}', base: './src/content/notebook' }),
-  schema: z.object({
-    date: z.preprocess(
-      (v) => (v instanceof Date ? v.toISOString().slice(0, 10) : v == null ? v : String(v)),
-      z.string().regex(/^\d{4}(-\d{2}(-\d{2})?)?$/, 'Tarih 2026, 2026-09 ya da 2026-11-03 biçiminde olmalı'),
-    ),
-    kind: withDefault(
-      z.enum(['milestone', 'course', 'workshop', 'conference', 'certificate', 'talk', 'note']),
-      'note',
-    ),
-    title_tr: z.string(),
-    title_en: text,
-    note_tr: text,
-    note_en: text,
-    link: text,
-    file: text,
-  }),
-});
-
-export const collections = { blog, projects, publications, notebook };
+export const collections = { blog, projects, publications };

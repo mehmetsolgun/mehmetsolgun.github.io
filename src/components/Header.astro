@@ -21,7 +21,6 @@ const links = [
   { path: 'about/', label: t('nav.about') },
   { path: 'research/', label: t('nav.research') },
   ...(hasPubs ? [{ path: 'publications/', label: t('nav.publications') }] : []),
-  { path: 'notebook/', label: t('nav.notebook') },
   { path: 'blog/', label: t('nav.blog') },
   { path: 'contact/', label: t('nav.contact') },
 ].map((l) => ({ ...l, url: href(lang, l.path), current: path.startsWith(href(lang, l.path).replace(/\/$/, '')) }));
