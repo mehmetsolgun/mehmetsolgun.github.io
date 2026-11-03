@@ -1,0 +1,283 @@
+---
+// Web özgeçmiş: tamamen profil, lab defteri ve yayın verisinden üretilir; yazdırınca A4 CV olur.
+import Base from '../layouts/Base.astro';
+import profile from '../data/profile.json';
+import { href, formatDate, pick, useTranslations, type Lang } from '../i18n/ui';
+import { getNotebook, getPublications } from '../lib/content';
+import { profileLinks } from '../lib/links';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+const education = profile.timeline
+  .filter((e) => e.track === 'education')
+  .sort((a, b) => b.start - a.start);
+const experience = profile.timeline
+  .filter((e) => e.track === 'experience')
+  .sort((a, b) => b.start - a.start);
+const activities = (await getNotebook()).filter((e) =>
+  ['course', 'workshop', 'conference', 'certificate', 'talk'].includes(e.data.kind),
+);
+const pubs = await getPublications();
+const skills: string[] = (profile as Record<string, any>)[`skills_${lang}`] ?? profile.skills_tr;
+const siteUrl = Astro.site ? new URL(href(lang), Astro.site).toString().replace(/\/$/, '') : '';
+const years = (e: { start: number; end: number | null }) => `${e.start}–${e.end ?? t('about.present')}`;
+---
+
+<Base lang={lang} title={t('cv.title')} chrom="chr8" pageLabel="cv">
+  <article class="wrap cv">
+    <header class="cv-head" data-locus={t('cv.title')}>
+      <div>
+        <p class="mono kicker">{t('cv.title')}</p>
+        <h1>{profile.name}<span class="cred">, {profile.credentials}</span></h1>
+        <p class="role">{pick(profile, 'title', lang)}</p>
+        <p class="aff">{pick(profile, 'affiliation', lang)}</p>
+      </div>
+      <button type="button" class="btn no-print" data-print>{t('cv.print')}</button>
+    </header>
+
+    <section class="block" data-locus={t('cv.contact')}>
+      <h2 class="mono">{t('cv.contact')}</h2>
+      <ul class="rows">
+        <li><span class="k mono">email</span><a href={`mailto:${profile.email}`}>{profile.email}</a></li>
+        {profile.email_school && <li><span class="k mono">email.edu</span><a href={`mailto:${profile.email_school}`}>{profile.email_school}</a></li>}
+        {siteUrl && <li><span class="k mono">web</span><a href={siteUrl}>{siteUrl.replace(/^https?:\/\//, '')}</a></li>}
+        {profileLinks.map((l) => <li><span class="k mono">{l.key}</span><a href={l.url}>{l.url.replace(/^https?:\/\/(www\.)?/, '')}</a></li>)}
+      </ul>
+    </section>
+
+    <section class="block" data-locus={t('cv.education')}>
+      <h2 class="mono">{t('cv.education')}</h2>
+      <ul class="rows">
+        {
+          education.map((e) => (
+            <li>
+              <span class="k mono">{years(e)}</span>
+              <div>
+                <strong>{pick(e, 'title', lang)}</strong>
+                <span class="sub">{pick(e, 'place', lang)}</span>
+              </div>
+            </li>
+          ))
+        }
+      </ul>
+    </section>
+
+    {
+      experience.length > 0 && (
+        <section class="block" data-locus={t('about.experience')}>
+          <h2 class="mono">{t('about.experience')}</h2>
+          <ul class="rows">
+            {experience.map((e) => (
+              <li>
+                <span class="k mono">{years(e)}</span>
+                <div>
+                  <strong>{pick(e, 'title', lang)}</strong>
+                  <span class="sub">{pick(e, 'place', lang)}</span>
+                </div>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )
+    }
+
+    <section class="block" data-locus={t('cv.interests')}>
+      <h2 class="mono">{t('cv.interests')}</h2>
+      <ul class="rows">
+        {
+          profile.interests.map((it, i) => (
+            <li>
+              <span class="k mono">{String(i + 1).padStart(2, '0')}</span>
+              <div>
+                <strong>{pick(it, 'title', lang)}</strong>
+                <span class="sub">{pick(it, 'text', lang)}</span>
+              </div>
+            </li>
+          ))
+        }
+      </ul>
+    </section>
+
+    <section class="block" data-locus={t('cv.focus')}>
+      <h2 class="mono">{t('cv.focus')}</h2>
+      <p class="focus">{skills.join(' · ')}</p>
+    </section>
+
+    {
+      activities.length > 0 && (
+        <section class="block" data-locus={t('cv.activities')}>
+          <h2 class="mono">{t('cv.activities')}</h2>
+          <ul class="rows">
+            {activities.map((e) => (
+              <li>
+                <span class="k mono">{e.data.date}</span>
+                <div>
+                  <strong>{pick(e.data, 'title', lang)}</strong>
+                  <span class="sub">
+                    {t(`kind.${e.data.kind}`)}
+                    {pick(e.data, 'note', lang) && ` · ${pick(e.data, 'note', lang)}`}
+                  </span>
+                </div>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )
+    }
+
+    {
+      pubs.length > 0 && (
+        <section class="block" data-locus={t('cv.publications')}>
+          <h2 class="mono">{t('cv.publications')}</h2>
+          <ol class="rows pubs">
+            {pubs.map((p) => (
+              <li>
+                <span class="k mono">{p.data.year}</span>
+                <div>
+                  {p.data.authors.join(', ')}. <strong>{p.data.title}</strong>. <em>{p.data.venue}</em>
+                  {p.data.volume && `, ${p.data.volume}`}
+                  {p.data.pages && `, ${p.data.pages}`}.
+                  {p.data.status !== 'published' && ` (${t(`pubs.status.${p.data.status}`)})`}
+                  {p.data.doi && <span class="sub mono">doi:{p.data.doi}</span>}
+                </div>
+              </li>
+            ))}
+          </ol>
+        </section>
+      )
+    }
+
+    <p class="mono muted stamp">{t('cv.updated')}: {formatDate(new Date(), lang)}</p>
+  </article>
+</Base>
+
+<style>
+  .cv {
+    max-width: 860px;
+    padding-top: clamp(40px, 8vw, 80px);
+  }
+  .cv-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 24px;
+    padding-bottom: 28px;
+    border-bottom: 1px solid var(--line-strong);
+  }
+  .kicker {
+    margin: 0 0 12px;
+    font-size: 0.75rem;
+    color: var(--accent);
+    text-transform: lowercase;
+  }
+  h1 {
+    font-size: var(--step-3);
+    font-weight: 420;
+  }
+  .cred {
+    color: var(--muted);
+    font-weight: 300;
+  }
+  .role,
+  .aff {
+    margin: 8px 0 0;
+    color: var(--fg-soft);
+  }
+  .aff {
+    margin-top: 2px;
+    font-size: 0.9375rem;
+    color: var(--muted);
+  }
+  .block {
+    display: grid;
+    grid-template-columns: 160px minmax(0, 1fr);
+    gap: 16px;
+    padding: 22px 0;
+    border-bottom: 1px solid var(--line);
+    break-inside: avoid;
+  }
+  h2 {
+    padding-top: 3px;
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    color: var(--accent);
+    text-transform: lowercase;
+  }
+  .rows {
+    display: grid;
+    gap: 12px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  .rows li {
+    display: grid;
+    grid-template-columns: 120px minmax(0, 1fr);
+    gap: 12px;
+    break-inside: avoid;
+  }
+  .k {
+    padding-top: 2px;
+    font-size: 0.75rem;
+    color: var(--muted);
+    white-space: nowrap;
+  }
+  .rows strong {
+    display: block;
+    font-weight: 500;
+  }
+  .sub {
+    display: block;
+    color: var(--muted);
+    font-size: 0.9375rem;
+  }
+  .rows a {
+    text-decoration: none;
+    word-break: break-word;
+  }
+  .rows a:hover {
+    text-decoration: underline;
+  }
+  .focus {
+    margin: 0;
+  }
+  .stamp {
+    margin-top: 24px;
+    font-size: 0.6875rem;
+  }
+  @media (max-width: 640px) {
+    .cv-head {
+      flex-direction: column;
+    }
+    .block,
+    .rows li {
+      grid-template-columns: 1fr;
+      gap: 6px;
+    }
+  }
+  @media print {
+    .cv {
+      max-width: none;
+      padding: 0;
+    }
+    .cv-head {
+      padding-bottom: 14px;
+    }
+    .block {
+      grid-template-columns: 34mm minmax(0, 1fr);
+      padding: 10px 0;
+    }
+    .rows {
+      gap: 6px;
+    }
+  }
+</style>
+
+<script>
+  document.querySelector('[data-print]')?.addEventListener('click', () => window.print());
+</script>

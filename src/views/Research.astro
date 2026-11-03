@@ -2,9 +2,11 @@
 import Base from '../layouts/Base.astro';
 import Locus from '../components/Locus.astro';
 import TrackCard from '../components/TrackCard.astro';
+import PublicationItem from '../components/PublicationItem.astro';
+import EmptyTrack from '../components/EmptyTrack.astro';
 import profile from '../data/profile.json';
-import { pick, useTranslations, type Lang } from '../i18n/ui';
-import { getProjects } from '../lib/content';
+import { href, pick, useTranslations, type Lang } from '../i18n/ui';
+import { getProjects, getPublications } from '../lib/content';
 
 interface Props {
   lang: Lang;
@@ -12,11 +14,20 @@ interface Props {
 const { lang } = Astro.props;
 const t = useTranslations(lang);
 const projects = await getProjects(lang);
+const pubs = await getPublications();
 const now = new Date().getFullYear();
 const range: [number, number] = [Math.min(now - 4, ...projects.map((p) => p.data.start)), now + 1];
 const ongoing = projects.filter((p) => p.data.status === 'ongoing');
 const done = projects.filter((p) => p.data.status === 'completed');
-let n = 1;
+
+let n = 0;
+const num = {
+  interests: ++n,
+  ongoing: ongoing.length ? ++n : 0,
+  done: done.length ? ++n : 0,
+  noProjects: projects.length ? 0 : ++n,
+  pubs: ++n,
+};
 ---
 
 <Base lang={lang} title={t('research.title')} chrom="chr3" pageLabel={t('nav.research').toLocaleLowerCase(lang)}>
@@ -25,7 +36,7 @@ let n = 1;
     <p>{t('research.lead')}</p>
   </header>
 
-  <Locus n={n++} title={t('research.interests')}>
+  <Locus n={num.interests} title={t('research.interests')}>
     <ol class="interests">
       {
         profile.interests.map((it, i) => (
@@ -40,40 +51,53 @@ let n = 1;
   </Locus>
 
   {
-    ongoing.length > 0 && (
-      <Locus n={n++} title={t('status.ongoing')}>
+    num.ongoing > 0 && (
+      <Locus n={num.ongoing} title={`${t('research.projects')} · ${t('status.ongoing')}`}>
         {ongoing.map((p) => <TrackCard project={p} lang={lang} range={range} />)}
       </Locus>
     )
   }
   {
-    done.length > 0 && (
-      <Locus n={n++} title={t('status.completed')}>
+    num.done > 0 && (
+      <Locus n={num.done} title={`${t('research.projects')} · ${t('status.completed')}`}>
         {done.map((p) => <TrackCard project={p} lang={lang} range={range} />)}
       </Locus>
     )
   }
   {
-    projects.length === 0 && (
-      <Locus n={n++} title={t('research.projects')}>
-        <p class="empty mono">
-          <span aria-hidden="true">░░░░░░░░░░░░ </span>
-          {t('research.empty')}
-        </p>
+    num.noProjects > 0 && (
+      <Locus n={num.noProjects} title={t('research.projects')}>
+        <EmptyTrack chrom="chr3" text={t('research.empty')} />
       </Locus>
     )
   }
+
+  <Locus
+    n={num.pubs}
+    id="publications"
+    title={t('pubs.title')}
+    more={pubs.length > 5 ? { href: href(lang, 'publications/'), label: t('all.publications') } : undefined}
+  >
+    {
+      pubs.length > 0 ? (
+        <ul class="plain">{pubs.slice(0, 5).map((p) => <PublicationItem pub={p} lang={lang} />)}</ul>
+      ) : (
+        <EmptyTrack chrom="chr4" text={t('pubs.empty')} links />
+      )
+    }
+  </Locus>
 </Base>
 
 <style>
-  .interests {
+  .interests,
+  .plain {
     margin: 0;
     padding: 0;
     list-style: none;
   }
   .interests li {
     display: grid;
-    grid-template-columns: 120px minmax(0, 1fr);
+    grid-template-columns: var(--rail) minmax(0, 1fr);
     gap: 4px 16px;
     padding: 22px 0;
     border-top: 1px solid var(--line);
@@ -91,16 +115,6 @@ let n = 1;
     margin: 0;
     max-width: var(--measure);
     color: var(--fg-soft);
-  }
-  .empty {
-    margin: 0;
-    padding: 22px 0;
-    border-top: 1px solid var(--line);
-    color: var(--muted);
-    font-size: 0.8125rem;
-  }
-  .empty span {
-    color: var(--line-strong);
   }
   @media (max-width: 640px) {
     .interests li {

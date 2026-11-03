@@ -4,6 +4,7 @@ import { render, type CollectionEntry } from 'astro:content';
 import Article from './Article.astro';
 import { href, formatDate, useTranslations, type Lang } from '../i18n/ui';
 import { entrySlug, hasTranslation, readingMinutes } from '../lib/content';
+import { blogPosting } from '../lib/schema';
 
 interface Props {
   lang: Lang;
@@ -17,9 +18,8 @@ const post = entry.collection === 'blog' ? entry.data : null;
 const project = entry.collection === 'projects' ? entry.data : null;
 const section = post ? 'blog' : 'research';
 const slug = entrySlug(entry.id);
-const altHref = (await hasTranslation(entry.collection, entry.id, other))
-  ? href(other, `${section}/${slug}/`)
-  : href(other, `${section}/`);
+const translated = await hasTranslation(entry.collection, entry.id, other);
+const altHref = translated ? href(other, `${section}/${slug}/`) : href(other, `${section}/`);
 ---
 
 <Article
@@ -29,7 +29,9 @@ const altHref = (await hasTranslation(entry.collection, entry.id, other))
   chrom={post ? 'chr5' : 'chr3'}
   pageLabel={post ? 'blog' : t('nav.research').toLocaleLowerCase(lang)}
   altHref={altHref}
+  translated={translated}
   back={{ href: href(lang, `${section}/`), label: post ? t('blog.back') : t('all.projects') }}
+  jsonLd={entry.collection === 'blog' ? blogPosting(entry, href(lang, `blog/${slug}/`), lang, Astro.site) : undefined}
 >
   <Fragment slot="meta">
     {post && <time datetime={post.date.toISOString()}>{formatDate(post.date, lang)}</time>}

@@ -1,4 +1,5 @@
 ---
+pair: delta-delta-ct
 title: "The 2^−ΔΔCt method in RT-qPCR: a short note"
 description: "The logic behind relative gene expression, its assumptions and a small example."
 date: 2026-11-03

@@ -16,12 +16,11 @@ content:
     fields:
       - { name: name, label: Ad Soyad, type: string, required: true }
       - { name: credentials, label: Unvan kısaltması (ör. DVM), type: string }
-      - { name: pubName, label: Yayınlardaki adın (ör. Soyad A), type: string, description: Yayın listesinde bu isim vurgulanır }
+      - { name: pubName, label: Yayınlardaki adın (ör. Solgun M), type: string, description: Yayın listesinde bu isim vurgulanır }
       - { name: email, label: E-posta, type: string }
       - { name: email_school, label: Okul e-postası, type: string }
       - { name: photo, label: Fotoğraf, type: image }
-      - { name: og_image, label: Paylaşım görseli (JPG/PNG), type: image, description: Sosyal medyada link paylaşıldığında görünen görsel }
-      - { name: cv, label: CV (PDF), type: file }
+      - { name: cv, label: 'CV (PDF, isteğe bağlı)', type: file, description: 'Boş bırakırsan CV düğmesi sitedeki /cv sayfasına gider' }
       - { name: title_tr, label: Unvan (TR), type: string }
       - { name: title_en, label: Unvan (EN), type: string }
       - { name: affiliation_tr, label: Kurum (TR), type: string }
@@ -61,11 +60,37 @@ content:
         type: object
         fields:
           - { name: orcid, label: ORCID URL, type: string }
-          - { name: scholar, label: Google Scholar URL, type: string }
           - { name: researchgate, label: ResearchGate URL, type: string }
           - { name: dergipark, label: DergiPark URL, type: string }
+          - { name: yokakademik, label: YÖK Akademik URL, type: string }
+          - { name: scholar, label: Google Scholar URL, type: string }
           - { name: linkedin, label: LinkedIn URL, type: string }
           - { name: github, label: GitHub URL, type: string }
+      - { name: google_verification, label: Google Search Console doğrulama kodu, type: string, description: 'Search Console > HTML etiketi yöntemindeki content="..." değeri' }
+
+  # ---------- Lab defteri ----------
+  - name: notebook
+    label: Lab defteri
+    type: collection
+    path: src/content/notebook
+    format: yaml
+    filename: '{year}-{month}-{day}-{primary}.yml'
+    view:
+      fields: [title_tr, date, kind]
+      primary: title_tr
+      default: { sort: date, order: desc }
+    fields:
+      - { name: title_tr, label: Başlık (TR), type: string, required: true }
+      - { name: title_en, label: Başlık (EN), type: string }
+      - { name: date, label: Tarih, type: string, required: true, description: 'Bildiğin kadarını yaz: 2026, 2026-09 ya da 2026-11-03' }
+      - name: kind
+        label: Tür
+        type: select
+        options: { values: [milestone, course, workshop, conference, certificate, talk, note] }
+      - { name: note_tr, label: Kısa not (TR), type: text }
+      - { name: note_en, label: Kısa not (EN), type: text }
+      - { name: link, label: Bağlantı, type: string }
+      - { name: file, label: Belge (sertifika PDF vb.), type: file }
 
   # ---------- Yayınlar ----------
   - name: publications
@@ -75,7 +100,7 @@ content:
     format: yaml
     filename: '{primary}.yml'
     view:
-      fields: [title, year, type]
+      fields: [title, year, type, status]
       default: { sort: year, order: desc }
     fields:
       - { name: title, label: Başlık, type: string, required: true }
@@ -85,7 +110,11 @@ content:
       - name: type
         label: Tür
         type: select
-        options: { values: [article, conference, poster, preprint, thesis, chapter] }
+        options: { values: [article, conference, abstract, poster, talk, preprint, thesis, chapter] }
+      - name: status
+        label: Durum
+        type: select
+        options: { values: [published, in-press, submitted, in-preparation] }
       - { name: volume, label: Cilt(Sayı), type: string }
       - { name: pages, label: Sayfalar, type: string }
       - { name: doi, label: DOI, type: string, description: 'Örn. 10.1000/xyz123' }
@@ -94,28 +123,31 @@ content:
       - { name: featured, label: Ana sayfada göster, type: boolean }
 
   # ---------- Blog ----------
+  # "Eşleşme anahtarı" dosya adını belirler. Bir yazının Türkçe ve İngilizce
+  # sürümlerine AYNI anahtarı ver; dil düğmesi böylece çevirisine gider.
   - name: blog-tr
     label: Blog (Türkçe)
     type: collection
     path: src/content/blog/tr
-    filename: '{primary}.md'
+    filename: '{fields.pair}.md'
     view:
       fields: [title, date, draft]
       default: { sort: date, order: desc }
     fields: &blogFields
+      - { name: pair, label: Eşleşme anahtarı, type: string, required: true, description: 'Küçük harf ve tire, iki dilde aynı. Örn. delta-delta-ct' }
       - { name: title, label: Başlık, type: string, required: true }
       - { name: description, label: Özet, type: text }
       - { name: date, label: Tarih, type: date, required: true }
       - { name: updated, label: Güncelleme tarihi, type: date }
       - { name: tags, label: Etiketler, type: string, list: true }
       - { name: draft, label: Taslak (yayınlama), type: boolean }
-      - { name: body, label: İçerik (Markdown), type: code, options: { language: markdown } }
+      - { name: body, label: İçerik (Markdown), type: code, options: { format: markdown }, description: 'Görsel: ![açıklama](/media/dosya.jpg) · Formül: $...$ ya da $$...$$' }
 
   - name: blog-en
     label: Blog (English)
     type: collection
     path: src/content/blog/en
-    filename: '{primary}.md'
+    filename: '{fields.pair}.md'
     view:
       fields: [title, date, draft]
       default: { sort: date, order: desc }
@@ -126,10 +158,11 @@ content:
     label: Projeler (Türkçe)
     type: collection
     path: src/content/projects/tr
-    filename: '{primary}.md'
+    filename: '{fields.pair}.md'
     view:
       fields: [title, status, start]
     fields: &projectFields
+      - { name: pair, label: Eşleşme anahtarı, type: string, required: true, description: 'Küçük harf ve tire, iki dilde aynı' }
       - { name: title, label: Başlık, type: string, required: true }
       - { name: summary, label: Özet, type: text, required: true }
       - name: status
@@ -142,13 +175,13 @@ content:
       - { name: funding, label: Destek / fon, type: string }
       - { name: link, label: Dış bağlantı, type: string }
       - { name: featured, label: Ana sayfada göster, type: boolean }
-      - { name: body, label: İçerik (Markdown), type: code, options: { language: markdown } }
+      - { name: body, label: İçerik (Markdown), type: code, options: { format: markdown } }
 
   - name: projects-en
     label: Projects (English)
     type: collection
     path: src/content/projects/en
-    filename: '{primary}.md'
+    filename: '{fields.pair}.md'
     view:
       fields: [title, status, start]
     fields: *projectFields

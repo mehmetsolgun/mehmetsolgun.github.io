@@ -1,0 +1,63 @@
+---
+import Base from '../layouts/Base.astro';
+import NotebookItem from '../components/NotebookItem.astro';
+import NotebookTrack from '../components/NotebookTrack.astro';
+import { useTranslations, type Lang } from '../i18n/ui';
+import { getNotebook } from '../lib/content';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+const entries = await getNotebook();
+const years = [...new Set(entries.map((e) => e.data.date.slice(0, 4)))];
+---
+
+<Base lang={lang} title={t('notebook.title')} chrom="chr7" pageLabel={t('nav.notebook').toLocaleLowerCase(lang)}>
+  <header class="wrap page-head">
+    <h1>{t('notebook.title')}</h1>
+    <p>{t('notebook.lead')}</p>
+  </header>
+
+  {entries.length === 0 && <p class="wrap muted">{t('notebook.empty')}</p>}
+  {
+    entries.length > 0 && (
+      <div class="wrap">
+        <NotebookTrack entries={entries} lang={lang} />
+      </div>
+    )
+  }
+
+  {
+    years.map((y) => (
+      <section class="section year" data-locus={y}>
+        <div class="wrap">
+          <h2 class="mono">{y}</h2>
+          <ul>
+            {entries
+              .filter((e) => e.data.date.startsWith(y))
+              .map((e) => (
+                <NotebookItem entry={e} lang={lang} />
+              ))}
+          </ul>
+        </div>
+      </section>
+    ))
+  }
+</Base>
+
+<style>
+  .year {
+    padding-block: 24px 32px;
+  }
+  h2 {
+    margin-bottom: 4px;
+    font-size: 0.875rem;
+    color: var(--accent);
+  }
+  ul {
+    margin: 0;
+    padding: 0;
+  }
+</style>

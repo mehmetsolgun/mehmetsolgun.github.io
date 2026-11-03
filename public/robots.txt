@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://mehmetsolgun.github.io/sitemap-index.xml

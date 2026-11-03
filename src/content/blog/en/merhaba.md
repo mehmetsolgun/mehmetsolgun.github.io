@@ -1,4 +1,5 @@
 ---
+pair: merhaba
 title: "Hello: starting from the 5′ end"
 description: "Why this site exists, what I will share here, and the small biology jokes in its design."
 date: 2026-11-03
@@ -25,10 +26,12 @@ The bar at the top of the site is a **chromosome ideogram**. Each page is a diff
 The sequence under the helix on the home page encodes my name:
 
 ```text
-5′–ATG GAA CAT ATG GAA ACT TCT CTG GGT AAT TAA–3′
-    M   E   H   M   E   T   S   L   G   N   *
+5′–ATG GAA CAT ATG GAA ACT TCT TAG CTG GGT TGA AAT TAA–3′
+    M   E   H   M   E   T   S   O   L   G   U   N   *
 ```
 
-My name starts with ATG, the start codon. The letters **O** and **U** in "Solgun" could not be encoded, because they are not among the one-letter codes of the 20 standard amino acids.
+My name starts with ATG, the start codon. The interesting part is the **O** and **U** in "Solgun": these letters are not among the one-letter codes of the 20 standard amino acids. But both exist in nature. **O** is pyrrolysine and **U** is selenocysteine; both are built into proteins when the usual stop codons UAG (amber) and UGA (opal) are recoded under special conditions. That is how my name can be spelled in full.
+
+On the home page, the `transcribe()` button turns the DNA into mRNA (T → U), and `translate()` turns the mRNA into amino acids.
 
 Thanks for reading. You can reach me through the [contact](/en/contact/) page with questions or suggestions.

@@ -1,22 +1,47 @@
 ---
-import { encodeName } from '../lib/dna';
+// Ana sayfa sarmalı: imleçle açılan DNA + adı kodlayan dizide transcribe() → translate() (merkezi dogma).
+import { encodeName, recoded } from '../lib/dna';
+import { useTranslations, type Lang } from '../i18n/ui';
 
 interface Props {
   name: string;
-  hint: string;
+  lang: Lang;
 }
-const { name, hint } = Astro.props;
-const { codons, protein } = encodeName(name);
-const seq = codons.join('');
+const { name, lang } = Astro.props;
+const t = useTranslations(lang);
+const codons = encodeName(name);
+const seq = codons.map((c) => c.dna).join('');
+const protein = codons.map((c) => c.aa).join('');
 ---
 
 <figure class="helix" data-helix data-seq={seq}>
   <canvas aria-hidden="true"></canvas>
   <figcaption class="wrap mono">
-    <span class="strand">5′–<span class="codons">{codons.join(' ')}</span>–3′</span>
-    <button type="button" class="translate" data-translate aria-expanded="false">translate()</button>
-    <span class="protein" data-protein data-value={protein.join(' ')} aria-live="polite"></span>
-    <span class="hint muted">{hint}</span>
+    <span class="visually-hidden">{t('helix.sr')}: {protein.replace('*', '')}.</span>
+    <span class="strand" aria-hidden="true">
+      <span class="mol" data-mol>DNA</span>
+      <span>5′–</span><span class="codons">
+        {
+          codons.map((c) => (
+            <span
+              class:list={['c', { rc: recoded[c.aa] }]}
+              data-dna={c.dna}
+              data-aa={c.aa}
+              title={recoded[c.aa] ? `${c.aa} = ${recoded[c.aa].name}` : undefined}
+            >{c.dna}</span>
+          ))
+        }
+      </span><span>–3′</span>
+    </span>
+    <span class="ops">
+      <button type="button" data-transcribe aria-pressed="false">transcribe()</button>
+      <button type="button" data-translate aria-pressed="false">translate()</button>
+    </span>
+    <span class="protein" data-protein aria-hidden="true"></span>
+    <span class="visually-hidden" data-live aria-live="polite"></span>
+    <span class="note muted" data-note hidden>{t('helix.note')}</span>
+    <span class="hint muted pointer">{t('home.helixHint')}</span>
+    <span class="hint muted touch">{t('home.helixHintTouch')}</span>
   </figcaption>
 </figure>
 
@@ -40,10 +65,27 @@ const seq = codons.join('');
     font-size: 0.75rem;
     color: var(--fg-soft);
   }
+  .mol {
+    display: inline-block;
+    min-width: 4.5ch;
+    color: var(--muted);
+  }
   .codons {
     letter-spacing: 0.04em;
   }
-  .translate {
+  .c:not(:last-child) {
+    margin-right: 0.6ch;
+  }
+  .c.rc {
+    text-decoration: underline;
+    text-decoration-color: var(--accent);
+    text-underline-offset: 3px;
+  }
+  .ops {
+    display: inline-flex;
+    gap: 12px;
+  }
+  .ops button {
     padding: 0;
     border: 0;
     background: none;
@@ -52,6 +94,9 @@ const seq = codons.join('');
     cursor: pointer;
     text-decoration: underline dotted;
     text-underline-offset: 3px;
+  }
+  .ops button[aria-pressed='true'] {
+    text-decoration-style: solid;
   }
   .protein {
     color: var(--fg);
@@ -63,12 +108,25 @@ const seq = codons.join('');
     color: var(--muted);
     font-weight: 400;
   }
+  .protein :global(.rc) {
+    color: var(--accent);
+  }
+  .note {
+    flex-basis: 100%;
+    font-size: 0.6875rem;
+  }
   .hint {
     margin-left: auto;
   }
+  .hint.touch {
+    display: none;
+  }
   @media (hover: none) {
-    .hint {
+    .hint.pointer {
       display: none;
+    }
+    .hint.touch {
+      display: inline;
     }
   }
 </style>
@@ -84,6 +142,8 @@ const seq = codons.join('');
     const pair: Record<string, string> = { A: 'T', T: 'A', G: 'C', C: 'G' };
     const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
     const GROOVE = Math.PI * 0.7;
+    const SWEEP = 2600;
+    const IDLE = 8000;
 
     let w = 0, h = 0, dpr = 1;
     let t = 0;
@@ -91,8 +151,11 @@ const seq = codons.join('');
     let open: number[] = [];
     let colors: Colors;
     let visible = true;
+    let running = false;
     let raf = 0;
-    const start = performance.now();
+    // Açılışta polimeraz gibi soldan sağa bir kez geçen kabarcık
+    let sweepStart = reduce ? -Infinity : performance.now();
+    let lastActive = performance.now();
 
     const readColors = () => {
       const s = getComputedStyle(document.documentElement);
@@ -109,26 +172,26 @@ const seq = codons.join('');
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     };
 
-    const spacing = () => (w < 640 ? 11 : 13);
-
     const frame = (now: number) => {
-      const step = spacing();
+      const step = w < 640 ? 11 : 13;
       const n = Math.ceil(w / step) + 2;
       if (open.length !== n) open = new Array(n).fill(0);
       const cy = h / 2;
       const amp = h * 0.27;
       const sigma = w < 640 ? 38 : 64;
 
-      // Açılış: polimeraz gibi soldan sağa bir kez geçen kabarcık
-      const intro = reduce ? -1 : (now - start) / 2600;
-      const bubbleX = pointerX ?? (intro >= 0 && intro <= 1 ? intro * w * 1.2 - w * 0.1 : null);
+      const sp = (now - sweepStart) / SWEEP;
+      const sweeping = sp >= 0 && sp <= 1;
+      const bubbleX = pointerX ?? (sweeping ? sp * w * 1.2 - w * 0.1 : null);
 
       const pts: { x: number; top: number; bot: number; zTop: number; zBot: number; o: number; i: number }[] = [];
+      let maxOpen = 0;
       for (let i = 0; i < n; i++) {
         const x = i * step;
         const target = bubbleX === null ? 0 : Math.exp(-((x - bubbleX) ** 2) / (2 * sigma ** 2));
         open[i] = reduce ? target : open[i] + (target - open[i]) * 0.1;
         const o = open[i];
+        maxOpen = Math.max(maxOpen, o);
         const phase = i * 0.34 + t;
         // İkinci iplik π değil ~0.7π kayık: büyük ve küçük oluklar oluşur
         const phase2 = phase + GROOVE;
@@ -165,7 +228,7 @@ const seq = codons.join('');
           const a = pts[k - 1], b = pts[k];
           const depth = (a[zKey] + b[zKey]) / 2;
           const near = Math.max(a.o, b.o);
-          ctx.globalAlpha = 0.25 + 0.75 * ((depth + 1) / 2) * (1 - near) + near * 0.9;
+          ctx.globalAlpha = Math.min(1, 0.25 + 0.75 * ((depth + 1) / 2) * (1 - near) + near * 0.9);
           ctx.strokeStyle = near > 0.3 ? colors.accent : depth > 0 ? colors.fg : colors.muted;
           ctx.lineWidth = 1.1 + 0.7 * ((depth + 1) / 2);
           ctx.beginPath();
@@ -191,15 +254,29 @@ const seq = codons.join('');
       }
       ctx.globalAlpha = 1;
 
-      if (!reduce) {
+      // Etkileşim yoksa bir süre sonra durur (pil); imleç ya da dokunuşla devam eder
+      const idle = pointerX === null && !sweeping && now - lastActive > IDLE && maxOpen < 0.005;
+      if (!reduce && visible && !idle) {
         t += 0.006;
-        if (visible) raf = requestAnimationFrame(frame);
+        raf = requestAnimationFrame(frame);
+      } else {
+        running = false;
       }
     };
 
     const redraw = () => {
-      cancelAnimationFrame(raf);
+      if (running) return;
+      running = true;
       raf = requestAnimationFrame(frame);
+    };
+    const wake = () => {
+      lastActive = performance.now();
+      redraw();
+    };
+    const sweep = () => {
+      if (reduce) return;
+      sweepStart = performance.now();
+      wake();
     };
 
     readColors();
@@ -210,38 +287,97 @@ const seq = codons.join('');
     }).observe(canvas);
     new IntersectionObserver(([e]) => {
       visible = e.isIntersecting;
-      if (visible) redraw();
+      if (visible) wake();
     }).observe(canvas);
     new MutationObserver(() => {
       readColors();
       redraw();
     }).observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
 
-    canvas.addEventListener('pointermove', (e) => {
+    const setPointer = (e: PointerEvent) => {
       pointerX = e.clientX - canvas.getBoundingClientRect().left;
-      if (reduce) redraw();
-    });
-    canvas.addEventListener('pointerleave', () => {
+      wake();
+    };
+    const clearPointer = () => {
       pointerX = null;
-      if (reduce) redraw();
-    });
+      redraw();
+    };
+    canvas.addEventListener('pointerdown', setPointer);
+    canvas.addEventListener('pointermove', setPointer);
+    canvas.addEventListener('pointerleave', clearPointer);
+    canvas.addEventListener('pointerup', (e) => e.pointerType !== 'mouse' && clearPointer());
+    canvas.addEventListener('pointercancel', clearPointer);
 
-    // translate(): kodonları amino asitlere çevir
-    const btn = fig.querySelector<HTMLButtonElement>('[data-translate]')!;
+    // ---- Merkezi dogma: transcribe() (DNA → mRNA) ve translate() (mRNA → protein) ----
+    const wait = (ms: number) => new Promise((r) => setTimeout(r, reduce ? 0 : ms));
+    const mol = fig.querySelector<HTMLElement>('[data-mol]')!;
+    const codonEls = [...fig.querySelectorAll<HTMLElement>('.c')];
+    const tBtn = fig.querySelector<HTMLButtonElement>('[data-transcribe]')!;
+    const pBtn = fig.querySelector<HTMLButtonElement>('[data-translate]')!;
     const out = fig.querySelector<HTMLElement>('[data-protein]')!;
-    btn.addEventListener('click', () => {
-      const shown = btn.getAttribute('aria-expanded') === 'true';
-      btn.setAttribute('aria-expanded', String(!shown));
-      if (shown) return void (out.textContent = '');
-      const letters = (out.dataset.value || '').split(' ');
-      if (reduce) return void (out.textContent = letters.join(' '));
-      let k = 0;
-      out.textContent = '';
-      const tick = () => {
-        out.textContent = letters.slice(0, ++k).join(' ');
-        if (k < letters.length) setTimeout(tick, 90);
-      };
-      tick();
-    });
+    const live = fig.querySelector<HTMLElement>('[data-live]')!;
+    const note = fig.querySelector<HTMLElement>('[data-note]')!;
+    let transcribed = false;
+    let translated = false;
+    let busy = false;
+
+    const clearProtein = () => {
+      translated = false;
+      pBtn.setAttribute('aria-pressed', 'false');
+      out.replaceChildren();
+      note.hidden = true;
+      live.textContent = '';
+    };
+
+    const setTranscribed = async (on: boolean) => {
+      transcribed = on;
+      tBtn.setAttribute('aria-pressed', String(on));
+      mol.textContent = on ? 'mRNA' : 'DNA';
+      if (!on) clearProtein();
+      if (on) sweep();
+      // Harfler tek tek değişir: T ↔ U
+      for (const el of codonEls) {
+        const target = on ? el.dataset.dna!.replace(/T/g, 'U') : el.dataset.dna!;
+        for (let k = 0; k < 3; k++) {
+          const cur = el.textContent!.trim();
+          if (cur[k] === target[k]) continue;
+          el.textContent = cur.slice(0, k) + target[k] + cur.slice(k + 1);
+          await wait(30);
+        }
+      }
+      live.textContent = on ? 'mRNA' : 'DNA';
+    };
+
+    const run = async (fn: () => Promise<void>) => {
+      if (busy) return;
+      busy = true;
+      try {
+        await fn();
+      } finally {
+        busy = false;
+      }
+    };
+
+    tBtn.addEventListener('click', () => run(() => setTranscribed(!transcribed)));
+
+    pBtn.addEventListener('click', () =>
+      run(async () => {
+        if (translated) return clearProtein();
+        if (!transcribed) await setTranscribed(true);
+        out.replaceChildren();
+        const aas = codonEls.map((el) => el.dataset.aa!);
+        for (const [i, aa] of aas.entries()) {
+          const span = document.createElement('span');
+          span.textContent = aa;
+          if (codonEls[i].classList.contains('rc')) span.className = 'rc';
+          out.append(span, aa === '*' ? '' : ' ');
+          await wait(90);
+        }
+        translated = true;
+        pBtn.setAttribute('aria-pressed', 'true');
+        note.hidden = false;
+        live.textContent = `${aas.filter((a) => a !== '*').join(' ')}. ${note.textContent}`;
+      }),
+    );
   }
 </script>

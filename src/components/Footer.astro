@@ -15,6 +15,7 @@ const year = new Date().getFullYear();
     <p>© {year} {profile.name}</p>
     <p class="links">
       {profileLinks.map((l) => <a href={l.url} rel="me">{l.label}</a>)}
+      <a href={href(lang, 'cv/')}>CV</a>
       <a href={href(lang, 'rss.xml')}>RSS</a>
     </p>
     <p class="mono muted telomere" aria-hidden="true">TTAGGG TTAGGG TTAGGG ⟩</p>

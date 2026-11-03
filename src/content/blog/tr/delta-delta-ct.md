@@ -1,4 +1,5 @@
 ---
+pair: delta-delta-ct
 title: "RT-qPCR'da 2^−ΔΔCt yöntemi: kısa bir not"
 description: "Göreli gen ifadesi hesabının mantığı, varsayımları ve küçük bir örnek."
 date: 2026-11-03

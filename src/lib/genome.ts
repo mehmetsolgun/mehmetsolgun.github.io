@@ -6,6 +6,8 @@ export const chromosomes = {
   chr4: { length: 190_214_555, centromere: 0.26 },
   chr5: { length: 181_538_259, centromere: 0.27 },
   chr6: { length: 170_805_979, centromere: 0.36 },
+  chr7: { length: 159_345_973, centromere: 0.38 },
+  chr8: { length: 145_138_636, centromere: 0.31 },
   chrX: { length: 156_040_895, centromere: 0.39 },
 } as const;
 

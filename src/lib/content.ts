@@ -37,6 +37,32 @@ export async function hasTranslation(collection: 'blog' | 'projects', id: string
   );
 }
 
+export async function getNotebook() {
+  const items = await getCollection('notebook');
+  // Tarih metni yeniden eskiye; aynı tarihte dosya adına göre (sonraki önce)
+  return items.sort((a, b) => b.data.date.localeCompare(a.data.date) || b.id.localeCompare(a.id));
+}
+
+/** Lab defteri tarihini zaman ekseninde [başlangıç, bitiş] yıl aralığına çevirir. */
+export function dateSpan(date: string): [number, number] {
+  const [y, m, d] = date.split('-').map(Number);
+  if (!m) return [y, y + 1];
+  if (!d) return [y + (m - 1) / 12, y + m / 12];
+  const t = y + (m - 1) / 12 + (d - 1) / 365;
+  return [t, t];
+}
+
+/** Yazar adını karşılaştırma için sadeleştirir: "Solgun, M." ≈ "solgun m" */
+export const normName = (s: string) =>
+  s
+    .toLocaleLowerCase('tr')
+    .replace(/ı/g, 'i')
+    .normalize('NFD')
+    .replace(/[̀-ͯ]/g, '')
+    .replace(/[^a-z0-9 ]/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim();
+
 export function readingMinutes(body = '') {
   const words = body.replace(/```[\s\S]*?```/g, '').split(/\s+/).filter(Boolean).length;
   return Math.max(1, Math.round(words / 200));
@@ -44,8 +70,8 @@ export function readingMinutes(body = '') {
 
 export function toBibtex(pub: CollectionEntry<'publications'>) {
   const d = pub.data;
-  const kind = { article: 'article', conference: 'inproceedings', poster: 'misc', preprint: 'misc', thesis: 'phdthesis', chapter: 'incollection' }[d.type];
-  const venueKey = { article: 'journal', conference: 'booktitle', chapter: 'booktitle', thesis: 'school' }[d.type as string] ?? 'howpublished';
+  const kind = { article: 'article', conference: 'inproceedings', abstract: 'inproceedings', poster: 'misc', talk: 'misc', preprint: 'misc', thesis: 'phdthesis', chapter: 'incollection' }[d.type];
+  const venueKey = { article: 'journal', conference: 'booktitle', abstract: 'booktitle', chapter: 'booktitle', thesis: 'school' }[d.type as string] ?? 'howpublished';
   const firstAuthor = d.authors[0].split(/[ ,]/)[0].toLowerCase().normalize('NFD').replace(/[^a-z]/g, '');
   const fields: [string, string | undefined][] = [
     ['title', d.title],

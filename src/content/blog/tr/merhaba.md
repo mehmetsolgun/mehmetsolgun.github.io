@@ -1,4 +1,5 @@
 ---
+pair: merhaba
 title: "Merhaba: 5′ ucundan başlarken"
 description: "Bu site neden var, burada neler paylaşacağım ve tasarımdaki küçük biyoloji şakaları."
 date: 2026-11-03
@@ -25,10 +26,12 @@ Sitenin üstündeki çubuk bir **kromozom ideogramı**. Her sayfa ayrı bir krom
 Ana sayfadaki sarmalın altındaki dizi ise adımı kodluyor:
 
 ```text
-5′–ATG GAA CAT ATG GAA ACT TCT CTG GGT AAT TAA–3′
-    M   E   H   M   E   T   S   L   G   N   *
+5′–ATG GAA CAT ATG GAA ACT TCT TAG CTG GGT TGA AAT TAA–3′
+    M   E   H   M   E   T   S   O   L   G   U   N   *
 ```
 
-Adım ATG ile, yani başlangıç kodonuyla başlıyor. "Solgun"daki **O** ve **U** harfleri ise standart 20 amino asidin tek harf kodlarında bulunmadığı için diziye giremedi.
+Adım ATG ile, yani başlangıç kodonuyla başlıyor. Asıl ilginç kısım "Solgun"daki **O** ve **U**: bu harfler standart 20 amino asidin tek harf kodlarında yok. Ama doğada ikisi de var. **O** pirolizin, **U** selenosistein; ikisi de normalde stop kodonu olan UAG (amber) ve UGA (opal) kodonlarının özel koşullarda yeniden kodlanmasıyla proteine katılıyor. Adım bu yüzden tam olarak yazılabiliyor.
+
+Ana sayfadaki `transcribe()` düğmesi DNA'yı mRNA'ya çeviriyor (T → U), `translate()` ise mRNA'yı amino asitlere.
 
 Okuduğunuz için teşekkürler. Soru ve önerileriniz için [iletişim](/contact/) sayfasından bana ulaşabilirsiniz.

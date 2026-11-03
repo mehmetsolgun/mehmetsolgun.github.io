@@ -13,11 +13,13 @@ interface Props {
   pageLabel: string;
   altHref: string;
   back: { href: string; label: string };
+  jsonLd?: Record<string, unknown>;
+  translated?: boolean;
 }
-const { lang, title, description, chrom, pageLabel, altHref, back } = Astro.props;
+const { lang, title, description, chrom, pageLabel, altHref, back, jsonLd, translated } = Astro.props;
 ---
 
-<Base lang={lang} title={title} description={description} chrom={chrom} pageLabel={pageLabel} altHref={altHref} type="article">
+<Base lang={lang} title={title} description={description} chrom={chrom} pageLabel={pageLabel} altHref={altHref} type="article" jsonLd={jsonLd} translated={translated}>
   <article class="wrap article">
     <header data-locus={title}>
       <a class="back mono" href={back.href}>← {back.label}</a>

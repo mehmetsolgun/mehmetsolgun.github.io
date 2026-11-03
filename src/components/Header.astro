@@ -1,4 +1,5 @@
 ---
+import { getCollection } from 'astro:content';
 import Ideogram from './Ideogram.astro';
 import profile from '../data/profile.json';
 import { href, useTranslations, type Lang } from '../i18n/ui';
@@ -13,14 +14,18 @@ interface Props {
 const { lang, chrom, pageLabel, altHref } = Astro.props;
 const t = useTranslations(lang);
 const path = Astro.url.pathname;
+// Yayınlar ilk yayın eklenene kadar Araştırma sayfasının içinde durur
+const hasPubs = (await getCollection('publications')).length > 0;
 
 const links = [
   { path: 'about/', label: t('nav.about') },
   { path: 'research/', label: t('nav.research') },
-  { path: 'publications/', label: t('nav.publications') },
+  ...(hasPubs ? [{ path: 'publications/', label: t('nav.publications') }] : []),
+  { path: 'notebook/', label: t('nav.notebook') },
   { path: 'blog/', label: t('nav.blog') },
   { path: 'contact/', label: t('nav.contact') },
 ].map((l) => ({ ...l, url: href(lang, l.path), current: path.startsWith(href(lang, l.path).replace(/\/$/, '')) }));
+const other = lang === 'tr' ? 'en' : 'tr';
 ---
 
 <header class="site-header" data-header>
@@ -39,7 +44,7 @@ const links = [
       }
     </nav>
     <div class="tools">
-      <a class="lang mono" href={altHref} hreflang={lang === 'tr' ? 'en' : 'tr'} title={t('lang.switch')}>
+      <a class="lang mono" href={altHref} hreflang={other} lang={other} aria-label={t('lang.switch')} title={t('lang.switch')}>
         <span class:list={{ on: lang === 'tr' }}>TR</span>/<span class:list={{ on: lang === 'en' }}>EN</span>
       </a>
       <button class="icon" type="button" data-theme-toggle aria-label={t('theme.toggle')}>
@@ -70,6 +75,7 @@ const links = [
     backdrop-filter: blur(12px) saturate(1.4);
     -webkit-backdrop-filter: blur(12px) saturate(1.4);
     border-bottom: 1px solid var(--line);
+    view-transition-name: site-header;
   }
   .bar {
     display: flex;
@@ -99,6 +105,7 @@ const links = [
     position: relative;
     color: var(--fg-soft);
     text-decoration: none;
+    white-space: nowrap;
   }
   .links a:hover,
   .links a[aria-current='page'] {
@@ -147,7 +154,7 @@ const links = [
     display: none;
   }
 
-  @media (max-width: 820px) {
+  @media (max-width: 860px) {
     .bar {
       gap: 12px;
     }
@@ -190,9 +197,20 @@ const links = [
 <script>
   const header = document.querySelector<HTMLElement>('[data-header]')!;
   const menu = header.querySelector<HTMLButtonElement>('[data-menu]')!;
-  menu.addEventListener('click', () => {
-    const open = header.classList.toggle('open');
+  const nav = header.querySelector<HTMLElement>('#site-nav')!;
+
+  const setOpen = (open: boolean, focusMenu = false) => {
+    header.classList.toggle('open', open);
     menu.setAttribute('aria-expanded', String(open));
+    if (open) nav.querySelector('a')?.focus();
+    else if (focusMenu) menu.focus();
+  };
+  menu.addEventListener('click', () => setOpen(!header.classList.contains('open')));
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && header.classList.contains('open')) setOpen(false, true);
+  });
+  document.addEventListener('pointerdown', (e) => {
+    if (header.classList.contains('open') && !header.contains(e.target as Node)) setOpen(false);
   });
 
   header.querySelector('[data-theme-toggle]')!.addEventListener('click', () => {

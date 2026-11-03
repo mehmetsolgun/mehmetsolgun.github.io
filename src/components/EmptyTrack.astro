@@ -1,0 +1,71 @@
+---
+// Henüz içeriği olmayan bölüm: genom tarayıcısında "0 feature" gösteren boş bir şerit.
+import { chromosomes, type ChromName } from '../lib/genome';
+import { profileLinks } from '../lib/links';
+
+interface Props {
+  chrom: ChromName;
+  text: string;
+  links?: boolean;
+}
+const { chrom, text, links = false } = Astro.props;
+const len = chromosomes[chrom].length.toLocaleString('en-US');
+---
+
+<div class="empty">
+  <div class="lane" aria-hidden="true"></div>
+  <p class="mono coord" aria-hidden="true">{chrom}:1–{len} · 0 features</p>
+  <p class="text">{text}</p>
+  {
+    links && profileLinks.length > 0 && (
+      <p class="links mono">
+        {profileLinks.map((l) => (
+          <a href={l.url} rel="me">
+            {l.label} ↗
+          </a>
+        ))}
+      </p>
+    )
+  }
+</div>
+
+<style>
+  .empty {
+    padding-top: 18px;
+    border-top: 1px solid var(--line);
+  }
+  .lane {
+    height: 14px;
+    background:
+      linear-gradient(var(--line-strong), var(--line-strong)) center / 100% 1px no-repeat;
+  }
+  p {
+    margin: 0;
+  }
+  .coord {
+    margin-top: 6px;
+    font-size: 0.6875rem;
+    color: var(--muted);
+  }
+  .text {
+    max-width: var(--measure);
+    margin-top: 18px;
+    font-family: var(--font-serif);
+    font-size: var(--step-1);
+    color: var(--fg-soft);
+  }
+  .links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 18px;
+    margin-top: 12px;
+    font-size: 0.8125rem;
+  }
+  .links a {
+    color: var(--accent);
+    text-decoration: none;
+  }
+  .links a:hover {
+    text-decoration: underline;
+  }
+</style>

@@ -3,7 +3,7 @@ import Base from '../layouts/Base.astro';
 import Locus from '../components/Locus.astro';
 import GeneModel from '../components/GeneModel.astro';
 import profile from '../data/profile.json';
-import { asset, pick, useTranslations, type Lang } from '../i18n/ui';
+import { asset, href, pick, useTranslations, type Lang } from '../i18n/ui';
 import { profileLinks } from '../lib/links';
 
 interface Props {
@@ -24,7 +24,7 @@ const initials = profile.name.split(' ').map((s) => s[0]).join('');
       <div class="bio">{bio.map((p) => <p>{p}</p>)}</div>
       <div class="actions">
         {profileLinks.map((l) => <a class="btn" href={l.url} rel="me">{l.label} ↗</a>)}
-        {profile.cv && <a class="btn" href={asset(profile.cv)}>{t('home.cv')} ↓</a>}
+        <a class="btn primary" href={profile.cv ? asset(profile.cv) : href(lang, 'cv/')}>{profile.cv ? `${t('home.cv')} ↓` : `${t('home.cvWeb')} →`}</a>
       </div>
     </div>
     <figure class="photo">
@@ -145,7 +145,7 @@ const initials = profile.name.split(' ').map((s) => s[0]).join('');
       grid-template-columns: 1fr;
     }
     .photo {
-      max-width: 240px;
+      max-width: 150px;
       grid-row: 1;
     }
   }

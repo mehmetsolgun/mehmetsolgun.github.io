@@ -4,6 +4,7 @@ const labels: Record<string, string> = {
   orcid: 'ORCID',
   researchgate: 'ResearchGate',
   dergipark: 'DergiPark',
+  yokakademik: 'YÖK Akademik',
   scholar: 'Google Scholar',
   linkedin: 'LinkedIn',
   github: 'GitHub',

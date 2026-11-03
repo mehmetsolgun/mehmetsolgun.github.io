@@ -1,21 +1,26 @@
 import { defineCollection, z } from 'astro:content';
 import { glob } from 'astro/loaders';
 
-// Pages CMS boş bırakılan alanları null/'' olarak kaydedebilir; coerce bunları 0 ya da 1970'e çevirmesin.
-const optional = <T extends z.ZodTypeAny>(schema: T) =>
-  z.preprocess((v) => (v === '' || v == null ? undefined : v), schema.optional());
+// Pages CMS boş bırakılan alanları null/'' olarak kaydedebilir. Bunlar "yok" sayılır;
+// böylece coerce onları 0 ya da 1970'e çevirmez ve tek boş alan derlemeyi durdurmaz.
+const empty = (v: unknown) => (v === '' || v == null ? undefined : v);
+const optional = <T extends z.ZodTypeAny>(schema: T) => z.preprocess(empty, schema.optional());
+const withDefault = <T extends z.ZodTypeAny>(schema: T, value: z.input<T>) =>
+  z.preprocess(empty, schema.default(value));
+const text = optional(z.string());
+const list = withDefault(z.array(z.string()).transform((a) => a.filter(Boolean)), []);
 
-// Blog ve projeler: src/content/<koleksiyon>/<tr|en>/<slug>.md
-// Aynı dosya adı = aynı yazının çevirisi.
+// Blog ve projeler: src/content/<koleksiyon>/<tr|en>/<eşleşme-anahtarı>.md
+// Aynı dosya adı = aynı yazının çevirisi (Pages CMS'teki "pair" alanı dosya adını belirler).
 const blog = defineCollection({
   loader: glob({ pattern: '**/*.md', base: './src/content/blog' }),
   schema: z.object({
     title: z.string(),
-    description: z.string().default(''),
+    description: withDefault(z.string(), ''),
     date: z.coerce.date(),
     updated: optional(z.coerce.date()),
-    tags: z.array(z.string()).default([]),
-    draft: z.boolean().default(false),
+    tags: list,
+    draft: withDefault(z.boolean(), false),
   }),
 });
 
@@ -24,13 +29,13 @@ const projects = defineCollection({
   schema: z.object({
     title: z.string(),
     summary: z.string(),
-    status: z.enum(['ongoing', 'completed']).default('ongoing'),
+    status: withDefault(z.enum(['ongoing', 'completed']), 'ongoing'),
     start: z.coerce.number().int(),
     end: optional(z.coerce.number().int()),
-    tags: z.array(z.string()).default([]),
-    featured: z.boolean().default(false),
-    funding: z.string().optional(),
-    link: z.string().url().optional().or(z.literal('')),
+    tags: list,
+    featured: withDefault(z.boolean(), false),
+    funding: text,
+    link: text,
   }),
 });
 
@@ -39,17 +44,43 @@ const publications = defineCollection({
   loader: glob({ pattern: '**/*.{yml,yaml}', base: './src/content/publications' }),
   schema: z.object({
     title: z.string(),
-    authors: z.array(z.string()).min(1),
+    authors: z.array(z.string()).transform((a) => a.filter(Boolean)).pipe(z.array(z.string()).min(1)),
     year: z.coerce.number().int(),
     venue: z.string(),
-    type: z.enum(['article', 'conference', 'poster', 'preprint', 'thesis', 'chapter']).default('article'),
-    volume: z.string().optional(),
-    pages: z.string().optional(),
-    doi: z.string().optional(),
-    pmid: z.string().optional(),
-    url: z.string().optional(),
-    featured: z.boolean().default(false),
+    type: withDefault(
+      z.enum(['article', 'conference', 'abstract', 'poster', 'talk', 'preprint', 'thesis', 'chapter']),
+      'article',
+    ),
+    status: withDefault(z.enum(['published', 'in-press', 'submitted', 'in-preparation']), 'published'),
+    volume: text,
+    pages: text,
+    doi: text,
+    pmid: text,
+    url: text,
+    featured: withDefault(z.boolean(), false),
   }),
 });
 
-export const collections = { blog, projects, publications };
+// Lab defteri: tarihli kısa kayıtlar, dil bağımsız: src/content/notebook/<id>.yml
+// Tarih bilindiği kadar yazılır: 2026, 2026-09 ya da 2026-11-03.
+const notebook = defineCollection({
+  loader: glob({ pattern: '**/*.{yml,yaml}', base: './src/content/notebook' }),
+  schema: z.object({
+    date: z.preprocess(
+      (v) => (v instanceof Date ? v.toISOString().slice(0, 10) : v == null ? v : String(v)),
+      z.string().regex(/^\d{4}(-\d{2}(-\d{2})?)?$/, 'Tarih 2026, 2026-09 ya da 2026-11-03 biçiminde olmalı'),
+    ),
+    kind: withDefault(
+      z.enum(['milestone', 'course', 'workshop', 'conference', 'certificate', 'talk', 'note']),
+      'note',
+    ),
+    title_tr: z.string(),
+    title_en: text,
+    note_tr: text,
+    note_en: text,
+    link: text,
+    file: text,
+  }),
+});
+
+export const collections = { blog, projects, publications, notebook };

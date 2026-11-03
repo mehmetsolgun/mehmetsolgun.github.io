@@ -7,9 +7,9 @@
   --muted: #6b7079;
   --line: #e4e3dd;
   --line-strong: #cfcdc5;
-  --accent: #0c8f7e;
-  --accent-soft: rgba(12, 143, 126, 0.1);
-  --mark: #d9484f; /* sadece ideogramdaki görüntü penceresi */
+  --accent: #0a7d6f; /* küçük metinde WCAG AA (4.8:1) */
+  --accent-soft: rgba(10, 125, 111, 0.1);
+  --mark: #c23a41; /* ideogramdaki görüntü penceresi ve hata satırı */
   --band-0: #f1f0ea;
   --band-1: #d8d6ce;
   --band-2: #a9a7a0;
@@ -29,6 +29,7 @@
   --step-4: clamp(2.5rem, 6vw, 4.25rem);
 
   --measure: 68ch;
+  --rail: 120px; /* mono etiketlerin sol sütunu */
   --wrap: 1120px;
   --gutter: clamp(16px, 4vw, 40px);
   --radius: 6px;

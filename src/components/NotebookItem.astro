@@ -1,0 +1,95 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import { asset, href, pick, useTranslations, type Lang } from '../i18n/ui';
+
+interface Props {
+  entry: CollectionEntry<'notebook'>;
+  lang: Lang;
+}
+const { entry, lang } = Astro.props;
+const t = useTranslations(lang);
+const d = entry.data;
+const title = pick(d, 'title', lang);
+const note = pick(d, 'note', lang);
+// "/blog/..." gibi site içi bağlantılar dile göre yazılır
+const link = d.link ? (d.link.startsWith('/') ? href(lang, d.link) : d.link) : undefined;
+---
+
+<li class="entry" data-kind={d.kind}>
+  <time class="mono" datetime={d.date}>{d.date}</time>
+  <div class="body">
+    <span class="chip">{t(`kind.${d.kind}`)}</span>
+    <p class="title">{link ? <a href={link}>{title}</a> : title}</p>
+    {note && <p class="note">{note}</p>}
+    {d.file && <a class="file mono" href={asset(d.file)}>↓ {t('notebook.file')}</a>}
+  </div>
+</li>
+
+<style>
+  .entry {
+    display: grid;
+    grid-template-columns: var(--rail) minmax(0, 1fr);
+    gap: 16px;
+    padding: 16px 0;
+    border-top: 1px solid var(--line);
+    list-style: none;
+  }
+  time {
+    position: relative;
+    padding-left: 14px;
+    padding-top: 3px;
+    font-size: 0.75rem;
+    color: var(--muted);
+    white-space: nowrap;
+  }
+  /* "feature" işareti: kilometre taşları vurgu renginde */
+  time::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 5px;
+    width: 3px;
+    height: 12px;
+    border-radius: 1px;
+    background: var(--band-3);
+  }
+  [data-kind='milestone'] time::before {
+    background: var(--accent);
+  }
+  .body {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 4px 12px;
+  }
+  p {
+    margin: 0;
+  }
+  .title {
+    flex: 1 1 260px;
+    font-family: var(--font-serif);
+    font-size: var(--step-1);
+    line-height: 1.35;
+  }
+  .title a {
+    text-decoration-color: var(--line-strong);
+  }
+  .note {
+    flex-basis: 100%;
+    order: 3;
+    color: var(--fg-soft);
+    font-size: 0.9375rem;
+  }
+  .file {
+    order: 4;
+    font-size: 0.75rem;
+    color: var(--accent);
+    text-decoration: none;
+  }
+  @media (max-width: 640px) {
+    .entry {
+      grid-template-columns: 1fr;
+      gap: 6px;
+    }
+  }
+</style>

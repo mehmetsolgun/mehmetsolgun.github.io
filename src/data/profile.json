@@ -5,7 +5,6 @@
   "email": "mehmetsolgun77@gmail.com",
   "email_school": "269227001@ogr.mku.edu.tr",
   "photo": "media/mehmet-solgun.webp",
-  "og_image": "media/mehmet-solgun.jpg",
   "cv": "",
   "title_tr": "Veteriner Hekim · Moleküler Biyokimya ve Genetik Doktora Öğrencisi",
   "title_en": "Veterinarian · PhD Student in Molecular Biochemistry and Genetics",
@@ -67,8 +66,10 @@
     "orcid": "https://orcid.org/0009-0004-9847-4120",
     "researchgate": "https://www.researchgate.net/profile/Mehmet-Solgun",
     "dergipark": "https://dergipark.org.tr/tr/pub/@mehmet-solgun",
+    "yokakademik": "",
     "scholar": "",
     "linkedin": "",
     "github": ""
-  }
+  },
+  "google_verification": ""
 }

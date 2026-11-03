@@ -5,9 +5,11 @@ import Locus from '../components/Locus.astro';
 import TrackCard from '../components/TrackCard.astro';
 import PublicationItem from '../components/PublicationItem.astro';
 import PostItem from '../components/PostItem.astro';
+import NotebookItem from '../components/NotebookItem.astro';
 import profile from '../data/profile.json';
 import { href, asset, pick, useTranslations, type Lang } from '../i18n/ui';
-import { getPosts, getProjects, getPublications } from '../lib/content';
+import { getNotebook, getPosts, getProjects, getPublications } from '../lib/content';
+import { profilePage } from '../lib/schema';
 
 interface Props {
   lang: Lang;
@@ -17,41 +19,41 @@ const t = useTranslations(lang);
 const projects = (await getProjects(lang)).filter((p) => p.data.featured).slice(0, 3);
 const pubs = (await getPublications()).filter((p) => p.data.featured).slice(0, 4);
 const posts = (await getPosts(lang)).slice(0, 3);
+const notes = (await getNotebook()).slice(0, 5);
 const now = new Date().getFullYear();
 const range: [number, number] = [Math.min(now - 4, ...projects.map((p) => p.data.start)), now + 1];
-const jsonLd = {
-  '@context': 'https://schema.org',
-  '@type': 'Person',
-  name: profile.name,
-  jobTitle: pick(profile, 'title', lang),
-  affiliation: { '@type': 'CollegeOrUniversity', name: lang === 'tr' ? 'Hatay Mustafa Kemal Üniversitesi' : 'Hatay Mustafa Kemal University' },
-  alumniOf: { '@type': 'CollegeOrUniversity', name: lang === 'tr' ? 'Hatay Mustafa Kemal Üniversitesi' : 'Hatay Mustafa Kemal University' },
-  email: `mailto:${profile.email}`,
-  image: profile.photo && Astro.site ? new URL(asset(profile.photo), Astro.site).toString() : undefined,
-  url: Astro.site ? new URL(href(lang), Astro.site).toString() : undefined,
-  sameAs: Object.values(profile.links).filter(Boolean),
+
+// Locus numaraları yalnızca gerçekten görünen bölümler için artar
+let n = 0;
+const num = {
+  interests: ++n,
+  notes: notes.length ? ++n : 0,
+  projects: projects.length ? ++n : 0,
+  pubs: pubs.length ? ++n : 0,
+  posts: posts.length ? ++n : 0,
 };
+const cvHref = profile.cv ? asset(profile.cv) : href(lang, 'cv/');
 ---
 
-<Base lang={lang} chrom="chr1" pageLabel={lang === 'tr' ? 'ana sayfa' : 'home'} jsonLd={jsonLd}>
+<Base lang={lang} chrom="chr1" pageLabel={lang === 'tr' ? 'ana sayfa' : 'home'} jsonLd={profilePage(lang, Astro.site)}>
   <section class="hero" data-locus={lang === 'tr' ? 'Giriş' : 'Intro'}>
     <div class="wrap head">
       <p class="mono muted eyebrow">{pick(profile, 'affiliation', lang)}</p>
       <h1>{profile.name}<span class="cred">, {profile.credentials}</span></h1>
       <p class="role">{pick(profile, 'title', lang)}</p>
     </div>
-    <Helix name={profile.name} hint={t('home.helixHint')} />
+    <Helix name={profile.name} lang={lang} />
     <div class="wrap foot">
       <p class="intro">{pick(profile, 'intro', lang)}</p>
       <div class="cta">
         <a class="btn primary" href={href(lang, 'about/')}>{t('nav.about')} →</a>
+        <a class="btn" href={cvHref}>{profile.cv ? t('home.cv') : t('home.cvWeb')}</a>
         {profile.links.orcid && <a class="btn" href={profile.links.orcid} rel="me">ORCID ↗</a>}
-        {profile.cv && <a class="btn" href={asset(profile.cv)}>{t('home.cv')}</a>}
       </div>
     </div>
   </section>
 
-  <Locus n={1} title={t('home.interests')}>
+  <Locus n={num.interests} title={t('home.interests')}>
     <ol class="interests">
       {
         profile.interests.map((it, i) => (
@@ -66,24 +68,32 @@ const jsonLd = {
   </Locus>
 
   {
-    projects.length > 0 && (
-      <Locus n={2} title={t('home.projects')} more={{ href: href(lang, 'research/'), label: t('all.projects') }}>
+    num.notes > 0 && (
+      <Locus n={num.notes} title={t('home.notebook')} more={{ href: href(lang, 'notebook/'), label: t('all.notebook') }}>
+        <ul class="plain">{notes.map((e) => <NotebookItem entry={e} lang={lang} />)}</ul>
+      </Locus>
+    )
+  }
+
+  {
+    num.projects > 0 && (
+      <Locus n={num.projects} title={t('home.projects')} more={{ href: href(lang, 'research/'), label: t('all.projects') }}>
         {projects.map((p) => <TrackCard project={p} lang={lang} range={range} />)}
       </Locus>
     )
   }
 
   {
-    pubs.length > 0 && (
-      <Locus n={3} title={t('home.publications')} more={{ href: href(lang, 'publications/'), label: t('all.publications') }}>
+    num.pubs > 0 && (
+      <Locus n={num.pubs} title={t('home.publications')} more={{ href: href(lang, 'publications/'), label: t('all.publications') }}>
         <ul class="plain">{pubs.map((p) => <PublicationItem pub={p} lang={lang} />)}</ul>
       </Locus>
     )
   }
 
   {
-    posts.length > 0 && (
-      <Locus n={4} title={t('home.posts')} more={{ href: href(lang, 'blog/'), label: t('all.posts') }}>
+    num.posts > 0 && (
+      <Locus n={num.posts} title={t('home.posts')} more={{ href: href(lang, 'blog/'), label: t('all.posts') }}>
         <ul class="plain">{posts.map((p) => <PostItem post={p} lang={lang} />)}</ul>
       </Locus>
     )
