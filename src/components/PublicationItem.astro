@@ -1,0 +1,120 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import profile from '../data/profile.json';
+import { useTranslations, type Lang } from '../i18n/ui';
+import { toBibtex } from '../lib/content';
+
+interface Props {
+  pub: CollectionEntry<'publications'>;
+  lang: Lang;
+}
+const { pub, lang } = Astro.props;
+const t = useTranslations(lang);
+const d = pub.data;
+const me = profile.pubName.toLowerCase();
+const doiUrl = d.doi ? (d.doi.startsWith('http') ? d.doi : `https://doi.org/${d.doi}`) : undefined;
+---
+
+<li class="pub" data-type={d.type}>
+  <span class="chip">{t(`pubs.type.${d.type}`)}</span>
+  <div>
+    <p class="title">{d.title}</p>
+    <p class="authors">
+      {
+        d.authors.map((a, i) => (
+          <>
+            {a.toLowerCase() === me ? <strong>{a}</strong> : a}
+            {i < d.authors.length - 1 && ', '}
+          </>
+        ))
+      }
+    </p>
+    <p class="venue">
+      <em>{d.venue}</em>{d.volume && `, ${d.volume}`}{d.pages && `, ${d.pages}`} · {d.year}
+    </p>
+    <p class="actions mono">
+      {doiUrl && <a href={doiUrl}>DOI</a>}
+      {d.pmid && <a href={`https://pubmed.ncbi.nlm.nih.gov/${d.pmid}/`}>PubMed</a>}
+      {d.url && <a href={d.url}>PDF</a>}
+      <button type="button" data-bibtex={toBibtex(pub)} data-copied={t('pubs.copied')}>{t('pubs.bibtex')}</button>
+    </p>
+  </div>
+</li>
+
+<style>
+  .pub {
+    display: grid;
+    grid-template-columns: 120px 1fr;
+    gap: 16px;
+    padding: 18px 0;
+    border-top: 1px solid var(--line);
+  }
+  .chip {
+    justify-self: start;
+    align-self: start;
+    margin-top: 3px;
+  }
+  p {
+    margin: 0;
+  }
+  .title {
+    font-family: var(--font-serif);
+    font-size: var(--step-1);
+    line-height: 1.35;
+  }
+  .authors {
+    margin-top: 6px;
+    color: var(--fg-soft);
+    font-size: 0.9375rem;
+  }
+  .authors strong {
+    color: var(--fg);
+    font-weight: 600;
+    text-decoration: underline;
+    text-decoration-color: var(--accent);
+    text-underline-offset: 3px;
+  }
+  .venue {
+    color: var(--muted);
+    font-size: 0.9375rem;
+  }
+  .actions {
+    display: flex;
+    gap: 14px;
+    margin-top: 8px;
+    font-size: 0.75rem;
+  }
+  .actions a,
+  .actions button {
+    padding: 0;
+    border: 0;
+    background: none;
+    color: var(--accent);
+    font: inherit;
+    text-decoration: none;
+    cursor: pointer;
+  }
+  .actions a:hover,
+  .actions button:hover {
+    text-decoration: underline;
+  }
+  @media (max-width: 640px) {
+    .pub {
+      grid-template-columns: 1fr;
+      gap: 8px;
+    }
+  }
+</style>
+
+<script>
+  document.querySelectorAll<HTMLButtonElement>('[data-bibtex]').forEach((btn) => {
+    btn.addEventListener('click', async () => {
+      try {
+        await navigator.clipboard.writeText(btn.dataset.bibtex!);
+        const label = btn.textContent;
+        btn.textContent = `✓ ${btn.dataset.copied}`;
+        setTimeout(() => (btn.textContent = label), 1600);
+      } catch {}
+    });
+  });
+</script>

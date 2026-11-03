@@ -1,0 +1,160 @@
+---
+import Base from '../layouts/Base.astro';
+import PublicationItem from '../components/PublicationItem.astro';
+import { useTranslations, type Lang, type UIKey } from '../i18n/ui';
+import { getPublications } from '../lib/content';
+import { profileLinks } from '../lib/links';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+const pubs = await getPublications();
+const years = [...new Set(pubs.map((p) => p.data.year))];
+const types = [...new Set(pubs.map((p) => p.data.type))];
+---
+
+<Base lang={lang} title={t('pubs.title')} chrom="chr4" pageLabel={t('nav.publications').toLocaleLowerCase(lang)}>
+  <header class="wrap page-head">
+    <h1>{t('pubs.title')}</h1>
+    <p>{t('pubs.lead')}</p>
+    {
+      types.length > 1 && (
+        <div class="filters mono" role="group" data-filters>
+          <button type="button" class="on" data-type="all">{t('pubs.all')} <span>{pubs.length}</span></button>
+          {types.map((ty) => (
+            <button type="button" data-type={ty}>
+              {t(`pubs.type.${ty}` as UIKey)} <span>{pubs.filter((p) => p.data.type === ty).length}</span>
+            </button>
+          ))}
+        </div>
+      )
+    }
+  </header>
+
+  {
+    pubs.length === 0 && (
+      <section class="section" data-locus={t('pubs.title')}>
+        <div class="wrap grid">
+          <h2 class="mono">—</h2>
+          <div class="empty">
+            <p>{t('pubs.empty')}</p>
+            <p class="profiles mono">
+              {profileLinks.map((l) => <a href={l.url} rel="me">{l.label} ↗</a>)}
+            </p>
+          </div>
+        </div>
+      </section>
+    )
+  }
+
+  {
+    years.map((y) => (
+      <section class="section year" data-locus={String(y)} data-year>
+        <div class="wrap grid">
+          <h2 class="mono">{y}</h2>
+          <ul>
+            {pubs
+              .filter((p) => p.data.year === y)
+              .map((p) => (
+                <PublicationItem pub={p} lang={lang} />
+              ))}
+          </ul>
+        </div>
+      </section>
+    ))
+  }
+</Base>
+
+<style>
+  .filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 28px;
+  }
+  .filters button {
+    padding: 5px 12px;
+    border: 1px solid var(--line-strong);
+    border-radius: 999px;
+    background: none;
+    color: var(--fg-soft);
+    font: inherit;
+    font-size: 0.75rem;
+    cursor: pointer;
+  }
+  .filters button span {
+    color: var(--muted);
+  }
+  .filters button.on {
+    border-color: var(--fg);
+    background: var(--fg);
+    color: var(--bg);
+  }
+  .filters button.on span {
+    color: inherit;
+    opacity: 0.6;
+  }
+  .year {
+    padding-block: 32px;
+  }
+  .grid {
+    display: grid;
+    grid-template-columns: 100px 1fr;
+    gap: 16px;
+  }
+  h2 {
+    font-size: 0.875rem;
+    color: var(--accent);
+    padding-top: 22px;
+  }
+  ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  ul :global(.pub:first-child) {
+    border-top: 0;
+  }
+  .empty {
+    padding-top: 20px;
+    max-width: var(--measure);
+    color: var(--fg-soft);
+    font-family: var(--font-serif);
+    font-size: var(--step-1);
+  }
+  .profiles {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 18px;
+    font-size: 0.8125rem;
+  }
+  .profiles a {
+    color: var(--accent);
+    text-decoration: none;
+  }
+  @media (max-width: 640px) {
+    .grid {
+      grid-template-columns: 1fr;
+      gap: 0;
+    }
+  }
+</style>
+
+<script>
+  const group = document.querySelector('[data-filters]');
+  group?.addEventListener('click', (e) => {
+    const btn = (e.target as HTMLElement).closest<HTMLButtonElement>('button');
+    if (!btn) return;
+    const type = btn.dataset.type;
+    group.querySelectorAll('button').forEach((b) => b.classList.toggle('on', b === btn));
+    document.querySelectorAll<HTMLElement>('.pub').forEach((li) => {
+      li.hidden = type !== 'all' && li.dataset.type !== type;
+    });
+    document.querySelectorAll<HTMLElement>('[data-year]').forEach((s) => {
+      s.hidden = !s.querySelector('.pub:not([hidden])');
+    });
+    dispatchEvent(new Event('resize'));
+  });
+</script>

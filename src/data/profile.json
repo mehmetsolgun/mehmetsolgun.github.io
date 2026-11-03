@@ -1,0 +1,74 @@
+{
+  "name": "Mehmet Solgun",
+  "credentials": "DVM",
+  "pubName": "Solgun M",
+  "email": "mehmetsolgun77@gmail.com",
+  "email_school": "269227001@ogr.mku.edu.tr",
+  "photo": "media/mehmet-solgun.webp",
+  "og_image": "media/mehmet-solgun.jpg",
+  "cv": "",
+  "title_tr": "Veteriner Hekim · Moleküler Biyokimya ve Genetik Doktora Öğrencisi",
+  "title_en": "Veterinarian · PhD Student in Molecular Biochemistry and Genetics",
+  "affiliation_tr": "Hatay Mustafa Kemal Üniversitesi · Sağlık Bilimleri Enstitüsü",
+  "affiliation_en": "Hatay Mustafa Kemal University · Institute of Health Sciences",
+  "intro_tr": "Veteriner hekimim ve Moleküler Biyokimya ve Genetik alanında doktora yapıyorum. RNA biyolojisi, transkripsiyon, RT-qPCR, mikroRNA'lar ve biyoinformatik üzerine çalışıyor, bu alanlarda kendimi geliştiriyorum.",
+  "intro_en": "I am a veterinarian doing a PhD in Molecular Biochemistry and Genetics. I study and build my skills in RNA biology, transcription, RT-qPCR, microRNAs and bioinformatics.",
+  "bio_tr": "2021–2026 yılları arasında Hatay Mustafa Kemal Üniversitesi Veteriner Fakültesinde okudum ve veteriner hekim olarak mezun oldum. 2026 yılında aynı üniversitenin Sağlık Bilimleri Enstitüsünde Moleküler Biyokimya ve Genetik doktora programına başladım.\n\nDoktoramın başındayım. Şu sıralar RNA biyolojisi ve transkripsiyonun düzenlenmesi, RT-qPCR ile gen ifadesi analizi, mikroRNA'ların gen regülasyonundaki rolü ve biyoinformatik araçlar üzerine yoğunlaşıyor ve bu alanlarda kendimi geliştiriyorum.\n\nBu sitede öğrendiklerimi, okuduklarımı ve ilerleyen dönemde yürüteceğim çalışmaları paylaşıyorum. İş birliği ya da sorularınız için iletişim sayfasından bana ulaşabilirsiniz.",
+  "bio_en": "I studied at the Faculty of Veterinary Medicine of Hatay Mustafa Kemal University from 2021 to 2026 and graduated as a veterinarian. In 2026 I began the PhD programme in Molecular Biochemistry and Genetics at the university's Institute of Health Sciences.\n\nI am at the start of my PhD. Right now I am focusing on RNA biology and the regulation of transcription, gene expression analysis with RT-qPCR, the role of microRNAs in gene regulation, and bioinformatics tools, and I am building my knowledge in these areas.\n\nOn this site I share what I learn, what I read and, in time, the research I carry out. For collaboration or questions, you can reach me through the contact page.",
+  "interests": [
+    {
+      "title_tr": "RNA biyolojisi ve transkripsiyon",
+      "title_en": "RNA biology and transcription",
+      "text_tr": "Genetik bilginin DNA'dan RNA'ya aktarılması ve transkripsiyonun hücrede nasıl düzenlendiği.",
+      "text_en": "How genetic information is transferred from DNA to RNA and how transcription is regulated in the cell."
+    },
+    {
+      "title_tr": "RT-qPCR ile gen ifadesi",
+      "title_en": "Gene expression by RT-qPCR",
+      "text_tr": "Gen ifadesinin ters transkripsiyon ve gerçek zamanlı PCR ile nicel olarak ölçülmesi ve doğru yorumlanması.",
+      "text_en": "Quantifying gene expression with reverse transcription and real-time PCR, and interpreting it correctly."
+    },
+    {
+      "title_tr": "MikroRNA'lar",
+      "title_en": "MicroRNAs",
+      "text_tr": "Küçük kodlamayan RNA'ların gen ifadesini transkripsiyon sonrası düzeyde nasıl düzenlediği.",
+      "text_en": "How small non-coding RNAs regulate gene expression at the post-transcriptional level."
+    },
+    {
+      "title_tr": "Biyoinformatik",
+      "title_en": "Bioinformatics",
+      "text_tr": "Dizi ve gen ifadesi verilerinin hesaplamalı yöntemlerle analizi ve biyolojik olarak yorumlanması.",
+      "text_en": "Analysing sequence and gene expression data computationally and interpreting it biologically."
+    }
+  ],
+  "timeline": [
+    {
+      "track": "education",
+      "start": 2021,
+      "end": 2026,
+      "title_tr": "Veteriner Hekimlik (DVM)",
+      "title_en": "Doctor of Veterinary Medicine (DVM)",
+      "place_tr": "Hatay Mustafa Kemal Üniversitesi, Veteriner Fakültesi",
+      "place_en": "Hatay Mustafa Kemal University, Faculty of Veterinary Medicine"
+    },
+    {
+      "track": "education",
+      "start": 2026,
+      "end": null,
+      "title_tr": "Doktora, Moleküler Biyokimya ve Genetik",
+      "title_en": "PhD, Molecular Biochemistry and Genetics",
+      "place_tr": "Hatay Mustafa Kemal Üniversitesi, Sağlık Bilimleri Enstitüsü",
+      "place_en": "Hatay Mustafa Kemal University, Institute of Health Sciences"
+    }
+  ],
+  "skills_tr": ["RNA biyolojisi", "Transkripsiyon", "RT-qPCR", "Gen ifadesi analizi", "miRNA", "Biyoinformatik"],
+  "skills_en": ["RNA biology", "Transcription", "RT-qPCR", "Gene expression analysis", "miRNA", "Bioinformatics"],
+  "links": {
+    "orcid": "https://orcid.org/0009-0004-9847-4120",
+    "researchgate": "https://www.researchgate.net/profile/Mehmet-Solgun",
+    "dergipark": "https://dergipark.org.tr/tr/pub/@mehmet-solgun",
+    "scholar": "",
+    "linkedin": "",
+    "github": ""
+  }
+}

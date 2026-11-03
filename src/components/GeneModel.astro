@@ -1,0 +1,184 @@
+---
+// Eğitim/deneyim zaman çizelgesi, bir gen modeli gibi: ekzonlar dönemler, intronlar aralar.
+import profile from '../data/profile.json';
+import { pick, useTranslations, type Lang } from '../i18n/ui';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+const now = new Date().getFullYear();
+const items = profile.timeline.map((e, i) => ({ ...e, i, stop: e.end ?? now + 1 }));
+const r0 = Math.min(...items.map((e) => e.start));
+const r1 = Math.max(...items.map((e) => e.stop));
+const pos = (y: number) => ((y - r0) / (r1 - r0)) * 100;
+const years = Array.from({ length: r1 - r0 + 1 }, (_, k) => r0 + k);
+const lanes = (['education', 'experience'] as const).map((track) => ({
+  track,
+  label: t(`about.${track}`),
+  items: items.filter((e) => e.track === track),
+})).filter((lane) => lane.items.length > 0);
+const ordered = [...items].sort((a, b) => b.start - a.start);
+---
+
+<div class="gene" data-gene>
+  <div class="lanes" aria-hidden="true">
+    {
+      lanes.map((lane) => (
+        <div class="lane">
+          <span class="mono name">{lane.label}</span>
+          <div class="strand">
+            {lane.items.map((e) => (
+              <span
+                class:list={['exon', { open: !e.end }]}
+                data-idx={e.i}
+                style={`left:${pos(e.start)}%;width:${pos(e.stop) - pos(e.start)}%`}
+                title={pick(e, 'title', lang)}
+              />
+            ))}
+          </div>
+        </div>
+      ))
+    }
+    <div class="lane axis">
+      <span></span>
+      <div class="ticks mono">
+        {years.map((y) => <span style={`left:${pos(y)}%`}>{(y - r0) % 2 === 0 || years.length < 8 ? y : ''}</span>)}
+      </div>
+    </div>
+  </div>
+
+  <ol class="legend">
+    {
+      ordered.map((e) => (
+        <li data-idx={e.i}>
+          <span class="mono muted">
+            {e.start}–{e.end ?? t('about.present')}
+          </span>
+          <div>
+            <strong>{pick(e, 'title', lang)}</strong>
+            <span class="muted">{pick(e, 'place', lang)}</span>
+          </div>
+          <span class="mono lane-tag">{t(`about.${e.track as 'education' | 'experience'}`)}</span>
+        </li>
+      ))
+    }
+  </ol>
+</div>
+
+<style>
+  .lanes {
+    display: grid;
+    gap: 14px;
+    margin-bottom: 28px;
+  }
+  .lane {
+    display: grid;
+    grid-template-columns: 120px 1fr;
+    align-items: center;
+    gap: 16px;
+  }
+  .name {
+    font-size: 0.75rem;
+    color: var(--muted);
+  }
+  .strand {
+    position: relative;
+    height: 22px;
+    /* intron: ince çizgi */
+    background: linear-gradient(var(--line-strong), var(--line-strong)) center / 100% 1px no-repeat;
+  }
+  /* intron üzerindeki yön okları (5′ → 3′) */
+  .strand::before {
+    content: '';
+    position: absolute;
+    inset: 7px 0;
+    background: var(--muted);
+    -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='22' height='8'%3E%3Cpath d='M9 1l3 3-3 3' fill='none' stroke='%23000' stroke-width='1.2'/%3E%3C/svg%3E") repeat-x left center / 22px 8px;
+    mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='22' height='8'%3E%3Cpath d='M9 1l3 3-3 3' fill='none' stroke='%23000' stroke-width='1.2'/%3E%3C/svg%3E") repeat-x left center / 22px 8px;
+  }
+  .exon {
+    position: absolute;
+    top: 3px;
+    bottom: 3px;
+    border-radius: 2px;
+    background: var(--band-3);
+    transition: background 0.2s var(--ease), transform 0.2s var(--ease);
+  }
+  .exon.open {
+    background: var(--accent);
+  }
+  .exon.hl {
+    background: var(--accent);
+    transform: scaleY(1.35);
+  }
+  .ticks {
+    position: relative;
+    height: 16px;
+    font-size: 0.625rem;
+    color: var(--muted);
+    border-top: 1px solid var(--line);
+  }
+  .ticks span {
+    position: absolute;
+    top: 4px;
+    transform: translateX(-50%);
+  }
+  .legend {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  .legend li {
+    display: grid;
+    grid-template-columns: 120px 1fr auto;
+    gap: 16px;
+    align-items: baseline;
+    padding: 14px 0;
+    border-top: 1px solid var(--line);
+    transition: background 0.2s var(--ease);
+  }
+  .legend li.hl strong {
+    color: var(--accent);
+  }
+  .legend div {
+    display: flex;
+    flex-direction: column;
+  }
+  .legend strong {
+    font-weight: 500;
+  }
+  .legend .muted {
+    font-size: 0.9375rem;
+  }
+  .lane-tag {
+    font-size: 0.6875rem;
+    color: var(--muted);
+  }
+  @media (max-width: 640px) {
+    .lane {
+      grid-template-columns: 70px 1fr;
+      gap: 10px;
+    }
+    .legend li {
+      grid-template-columns: 1fr;
+      gap: 2px;
+    }
+    .lane-tag {
+      display: none;
+    }
+  }
+</style>
+
+<script>
+  const gene = document.querySelector('[data-gene]');
+  if (gene) {
+    const all = gene.querySelectorAll<HTMLElement>('[data-idx]');
+    const set = (idx: string | null) => all.forEach((el) => el.classList.toggle('hl', el.dataset.idx === idx));
+    all.forEach((el) => {
+      el.addEventListener('mouseenter', () => set(el.dataset.idx!));
+      el.addEventListener('mouseleave', () => set(null));
+    });
+  }
+</script>

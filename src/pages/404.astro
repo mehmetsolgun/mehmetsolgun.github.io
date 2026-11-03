@@ -1,0 +1,41 @@
+---
+import Base from '../layouts/Base.astro';
+import { href, useTranslations } from '../i18n/ui';
+
+const tr = useTranslations('tr');
+const en = useTranslations('en');
+---
+
+<Base lang="tr" title={tr('404.title')} chrom="chrX" pageLabel="404" altHref={href('en')}>
+  <section class="wrap nf" data-locus="404">
+    <p class="mono err">ERR · chrX:0–0 not found in reference assembly</p>
+    <h1>{tr('404.title')}</h1>
+    <p>{tr('404.text')}</p>
+    <p class="muted" lang="en">{en('404.text')}</p>
+    <pre class="mono" aria-hidden="true">5′–ATG GCT ··· ··· ··· TAA–3′
+           ▲
+           deletion</pre>
+    <a class="btn primary" href={href('tr')}>← {tr('404.home')}</a>
+  </section>
+</Base>
+
+<style>
+  .nf {
+    padding-block: clamp(64px, 12vw, 140px);
+  }
+  .err {
+    color: var(--mark);
+    margin-bottom: 20px;
+  }
+  h1 {
+    font-size: var(--step-4);
+    font-weight: 400;
+    margin-bottom: 20px;
+  }
+  pre {
+    margin: 36px 0;
+    color: var(--muted);
+    font-size: 0.8125rem;
+    line-height: 1.5;
+  }
+</style>

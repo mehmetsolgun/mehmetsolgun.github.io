@@ -1,0 +1,63 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import { href, formatDate, useTranslations, type Lang } from '../i18n/ui';
+import { entrySlug, readingMinutes } from '../lib/content';
+
+interface Props {
+  post: CollectionEntry<'blog'>;
+  lang: Lang;
+}
+const { post, lang } = Astro.props;
+const t = useTranslations(lang);
+---
+
+<li>
+  <a class="post" href={href(lang, `blog/${entrySlug(post.id)}/`)}>
+    <time class="mono muted" datetime={post.data.date.toISOString()}>{formatDate(post.data.date, lang)}</time>
+    <div>
+      <h3>{post.data.title}</h3>
+      {post.data.description && <p>{post.data.description}</p>}
+    </div>
+    <span class="mono muted min">{readingMinutes(post.body)} {t('blog.minutes')}</span>
+  </a>
+</li>
+
+<style>
+  li {
+    list-style: none;
+  }
+  .post {
+    display: grid;
+    grid-template-columns: 120px 1fr auto;
+    gap: 16px;
+    align-items: baseline;
+    padding: 20px 0;
+    border-top: 1px solid var(--line);
+    text-decoration: none;
+  }
+  .post:hover h3 {
+    color: var(--accent);
+  }
+  time,
+  .min {
+    font-size: 0.75rem;
+  }
+  h3 {
+    font-size: var(--step-1);
+    transition: color 0.2s var(--ease);
+  }
+  p {
+    margin: 6px 0 0;
+    color: var(--fg-soft);
+    font-size: 0.9375rem;
+  }
+  @media (max-width: 640px) {
+    .post {
+      grid-template-columns: 1fr;
+      gap: 4px;
+    }
+    .min {
+      display: none;
+    }
+  }
+</style>

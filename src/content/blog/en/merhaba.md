@@ -1,0 +1,34 @@
+---
+title: "Hello: starting from the 5′ end"
+description: "Why this site exists, what I will share here, and the small biology jokes in its design."
+date: 2026-11-03
+tags: [announcement, phd]
+---
+
+Hello, I'm Mehmet. In 2026 I graduated from the Faculty of Veterinary Medicine at Hatay Mustafa Kemal University and started a PhD in Molecular Biochemistry and Genetics the same year. I wanted this site to be an open lab notebook for my PhD journey.
+
+## What will be here?
+
+I will take notes as I learn and share them. My current focus areas are:
+
+- RNA biology and the regulation of transcription
+- Gene expression analysis with RT-qPCR
+- MicroRNAs and gene regulation
+- Bioinformatics tools and data analysis
+
+Short summaries of papers I read, method notes and, over time, my own work will appear here.
+
+## A small note on the design
+
+The bar at the top of the site is a **chromosome ideogram**. Each page is a different chromosome; the red window shows where you are on the page, and you can click and drag it to navigate.
+
+The sequence under the helix on the home page encodes my name:
+
+```text
+5′–ATG GAA CAT ATG GAA ACT TCT CTG GGT AAT TAA–3′
+    M   E   H   M   E   T   S   L   G   N   *
+```
+
+My name starts with ATG, the start codon. The letters **O** and **U** in "Solgun" could not be encoded, because they are not among the one-letter codes of the 20 standard amino acids.
+
+Thanks for reading. You can reach me through the [contact](/en/contact/) page with questions or suggestions.

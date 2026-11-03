@@ -1,0 +1,11 @@
+---
+import Detail from '../../../views/Detail.astro';
+import { getPosts, entrySlug } from '../../../lib/content';
+
+export async function getStaticPaths() {
+  const posts = await getPosts('en');
+  return posts.map((entry) => ({ params: { slug: entrySlug(entry.id) }, props: { entry } }));
+}
+---
+
+<Detail lang="en" entry={Astro.props.entry} />

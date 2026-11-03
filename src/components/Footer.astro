@@ -1,0 +1,54 @@
+---
+import profile from '../data/profile.json';
+import { href, type Lang } from '../i18n/ui';
+import { profileLinks } from '../lib/links';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const year = new Date().getFullYear();
+---
+
+<footer class="site-footer">
+  <div class="wrap row">
+    <p>© {year} {profile.name}</p>
+    <p class="links">
+      {profileLinks.map((l) => <a href={l.url} rel="me">{l.label}</a>)}
+      <a href={href(lang, 'rss.xml')}>RSS</a>
+    </p>
+    <p class="mono muted telomere" aria-hidden="true">TTAGGG TTAGGG TTAGGG ⟩</p>
+  </div>
+</footer>
+
+<style>
+  .site-footer {
+    margin-top: clamp(48px, 8vw, 96px);
+    border-top: 1px solid var(--line);
+    font-size: 0.875rem;
+    color: var(--muted);
+  }
+  .row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 12px 24px;
+    padding-block: 28px;
+  }
+  .row p {
+    margin: 0;
+  }
+  .links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 16px;
+  }
+  .links a {
+    text-decoration: none;
+  }
+  .telomere {
+    margin-left: auto !important;
+    font-size: 0.6875rem;
+    letter-spacing: 0.08em;
+  }
+</style>

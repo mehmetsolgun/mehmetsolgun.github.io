@@ -1,0 +1,80 @@
+---
+import '@fontsource-variable/inter';
+import '@fontsource-variable/source-serif-4';
+import '@fontsource-variable/source-serif-4/wght-italic.css';
+import '@fontsource-variable/jetbrains-mono';
+import '../styles/global.css';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import profile from '../data/profile.json';
+import { href, asset, pick, useTranslations, defaultLang, type Lang } from '../i18n/ui';
+import type { ChromName } from '../lib/genome';
+
+interface Props {
+  lang: Lang;
+  title?: string;
+  description?: string;
+  chrom: ChromName;
+  pageLabel: string;
+  /** Diğer dildeki karşılık; verilmezse aynı yol kullanılır. */
+  altHref?: string;
+  type?: 'website' | 'article';
+  jsonLd?: Record<string, unknown>;
+}
+
+const { lang, title, description, chrom, pageLabel, altHref, type = 'website', jsonLd } = Astro.props;
+const t = useTranslations(lang);
+const other: Lang = lang === 'tr' ? 'en' : 'tr';
+
+// Bu sayfanın dilden bağımsız yolu (ör. "about/")
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+let rest = Astro.url.pathname.slice(base.length).replace(/^\/en(\/|$)/, '/');
+const alt = altHref ?? href(other, rest);
+const self = href(lang, rest);
+
+const fullTitle = title ? `${title} — ${profile.name}` : `${profile.name}, ${profile.credentials}`;
+const desc = description || pick(profile, 'intro', lang);
+const canonical = new URL(self, Astro.site);
+---
+
+<!doctype html>
+<html lang={lang}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{fullTitle}</title>
+    <meta name="description" content={desc} />
+    <link rel="canonical" href={canonical} />
+    <link rel="alternate" hreflang={lang} href={canonical} />
+    <link rel="alternate" hreflang={other} href={new URL(alt, Astro.site)} />
+    <link rel="alternate" hreflang="x-default" href={new URL(href(defaultLang, rest), Astro.site)} />
+    <link rel="icon" type="image/svg+xml" href={asset('favicon.svg')} />
+    <link rel="alternate" type="application/rss+xml" title={`${profile.name} — Blog`} href={href(lang, 'rss.xml')} />
+    <meta property="og:type" content={type} />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={desc} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:locale" content={lang === 'tr' ? 'tr_TR' : 'en_US'} />
+    {profile.og_image && <meta property="og:image" content={new URL(asset(profile.og_image), Astro.site)} />}
+    <meta name="twitter:card" content="summary" />
+    <meta name="theme-color" content="#fafaf7" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#0b0e12" media="(prefers-color-scheme: dark)" />
+    <meta name="generator" content={Astro.generator} />
+    {jsonLd && <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />}
+    <script is:inline>
+      try {
+        var s = localStorage.getItem('theme');
+        document.documentElement.dataset.theme =
+          s || (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+      } catch (e) {}
+    </script>
+  </head>
+  <body>
+    <a class="skip-link" href="#main">{t('nav.skip')}</a>
+    <Header lang={lang} chrom={chrom} pageLabel={pageLabel} altHref={alt} />
+    <main id="main">
+      <slot />
+    </main>
+    <Footer lang={lang} />
+  </body>
+</html>

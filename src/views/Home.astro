@@ -1,0 +1,173 @@
+---
+import Base from '../layouts/Base.astro';
+import Helix from '../components/Helix.astro';
+import Locus from '../components/Locus.astro';
+import TrackCard from '../components/TrackCard.astro';
+import PublicationItem from '../components/PublicationItem.astro';
+import PostItem from '../components/PostItem.astro';
+import profile from '../data/profile.json';
+import { href, asset, pick, useTranslations, type Lang } from '../i18n/ui';
+import { getPosts, getProjects, getPublications } from '../lib/content';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+const projects = (await getProjects(lang)).filter((p) => p.data.featured).slice(0, 3);
+const pubs = (await getPublications()).filter((p) => p.data.featured).slice(0, 4);
+const posts = (await getPosts(lang)).slice(0, 3);
+const now = new Date().getFullYear();
+const range: [number, number] = [Math.min(now - 4, ...projects.map((p) => p.data.start)), now + 1];
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Person',
+  name: profile.name,
+  jobTitle: pick(profile, 'title', lang),
+  affiliation: { '@type': 'CollegeOrUniversity', name: lang === 'tr' ? 'Hatay Mustafa Kemal Üniversitesi' : 'Hatay Mustafa Kemal University' },
+  alumniOf: { '@type': 'CollegeOrUniversity', name: lang === 'tr' ? 'Hatay Mustafa Kemal Üniversitesi' : 'Hatay Mustafa Kemal University' },
+  email: `mailto:${profile.email}`,
+  image: profile.photo && Astro.site ? new URL(asset(profile.photo), Astro.site).toString() : undefined,
+  url: Astro.site ? new URL(href(lang), Astro.site).toString() : undefined,
+  sameAs: Object.values(profile.links).filter(Boolean),
+};
+---
+
+<Base lang={lang} chrom="chr1" pageLabel={lang === 'tr' ? 'ana sayfa' : 'home'} jsonLd={jsonLd}>
+  <section class="hero" data-locus={lang === 'tr' ? 'Giriş' : 'Intro'}>
+    <div class="wrap head">
+      <p class="mono muted eyebrow">{pick(profile, 'affiliation', lang)}</p>
+      <h1>{profile.name}<span class="cred">, {profile.credentials}</span></h1>
+      <p class="role">{pick(profile, 'title', lang)}</p>
+    </div>
+    <Helix name={profile.name} hint={t('home.helixHint')} />
+    <div class="wrap foot">
+      <p class="intro">{pick(profile, 'intro', lang)}</p>
+      <div class="cta">
+        <a class="btn primary" href={href(lang, 'about/')}>{t('nav.about')} →</a>
+        {profile.links.orcid && <a class="btn" href={profile.links.orcid} rel="me">ORCID ↗</a>}
+        {profile.cv && <a class="btn" href={asset(profile.cv)}>{t('home.cv')}</a>}
+      </div>
+    </div>
+  </section>
+
+  <Locus n={1} title={t('home.interests')}>
+    <ol class="interests">
+      {
+        profile.interests.map((it, i) => (
+          <li>
+            <span class="mono">{String(i + 1).padStart(2, '0')}</span>
+            <h3>{pick(it, 'title', lang)}</h3>
+            <p>{pick(it, 'text', lang)}</p>
+          </li>
+        ))
+      }
+    </ol>
+  </Locus>
+
+  {
+    projects.length > 0 && (
+      <Locus n={2} title={t('home.projects')} more={{ href: href(lang, 'research/'), label: t('all.projects') }}>
+        {projects.map((p) => <TrackCard project={p} lang={lang} range={range} />)}
+      </Locus>
+    )
+  }
+
+  {
+    pubs.length > 0 && (
+      <Locus n={3} title={t('home.publications')} more={{ href: href(lang, 'publications/'), label: t('all.publications') }}>
+        <ul class="plain">{pubs.map((p) => <PublicationItem pub={p} lang={lang} />)}</ul>
+      </Locus>
+    )
+  }
+
+  {
+    posts.length > 0 && (
+      <Locus n={4} title={t('home.posts')} more={{ href: href(lang, 'blog/'), label: t('all.posts') }}>
+        <ul class="plain">{posts.map((p) => <PostItem post={p} lang={lang} />)}</ul>
+      </Locus>
+    )
+  }
+</Base>
+
+<style>
+  .hero {
+    padding-top: clamp(48px, 9vw, 112px);
+    padding-bottom: clamp(40px, 6vw, 72px);
+  }
+  .eyebrow {
+    margin-bottom: 18px;
+    font-size: 0.75rem;
+  }
+  h1 {
+    font-size: var(--step-4);
+    font-weight: 380;
+    letter-spacing: -0.025em;
+  }
+  .cred {
+    color: var(--muted);
+    font-weight: 300;
+  }
+  .role {
+    margin-top: 14px;
+    font-size: var(--step-1);
+    color: var(--fg-soft);
+  }
+  .head {
+    margin-bottom: clamp(16px, 3vw, 32px);
+  }
+  .foot {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 24px 48px;
+    align-items: end;
+    margin-top: clamp(28px, 5vw, 48px);
+  }
+  .intro {
+    max-width: 58ch;
+    margin: 0;
+    font-family: var(--font-serif);
+    font-size: var(--step-1);
+    line-height: 1.55;
+  }
+  .cta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  .interests {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    border-top: 1px solid var(--line);
+  }
+  .interests li {
+    padding: 22px 24px 24px 0;
+    border-bottom: 1px solid var(--line);
+  }
+  .interests .mono {
+    color: var(--accent);
+    font-size: 0.6875rem;
+  }
+  .interests h3 {
+    margin: 10px 0 8px;
+    font-size: var(--step-1);
+  }
+  .interests p {
+    margin: 0;
+    color: var(--fg-soft);
+    font-size: 0.9375rem;
+  }
+  .plain {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  @media (max-width: 720px) {
+    .foot {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

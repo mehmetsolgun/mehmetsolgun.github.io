@@ -1,0 +1,113 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import { href, useTranslations, type Lang } from '../i18n/ui';
+import { entrySlug } from '../lib/content';
+
+interface Props {
+  project: CollectionEntry<'projects'>;
+  lang: Lang;
+  range: [number, number];
+}
+const { project, lang, range } = Astro.props;
+const t = useTranslations(lang);
+const d = project.data;
+const now = new Date().getFullYear();
+const end = d.end ?? now + 1;
+const [r0, r1] = range;
+const left = ((d.start - r0) / (r1 - r0)) * 100;
+const width = Math.max(2, ((end - d.start) / (r1 - r0)) * 100);
+---
+
+<a class="track" href={href(lang, `research/${entrySlug(project.id)}/`)}>
+  <div class="meta mono">
+    <span class:list={['status', d.status]}>{t(`status.${d.status}`)}</span>
+    <span class="muted">{d.start}–{d.end ?? ''}</span>
+  </div>
+  <div class="body">
+    <h3>{d.title}</h3>
+    <p>{d.summary}</p>
+    <div class="tags">{d.tags.map((tag) => <span class="chip">{tag}</span>)}</div>
+  </div>
+  <div class="lane" aria-hidden="true">
+    <span class="feature" class:list={[d.status]} style={`left:${left}%;width:${width}%`}></span>
+  </div>
+</a>
+
+<style>
+  .track {
+    display: grid;
+    grid-template-columns: 120px 1fr;
+    gap: 6px 16px;
+    padding: 22px 0;
+    border-top: 1px solid var(--line);
+    text-decoration: none;
+  }
+  .track:hover h3 {
+    color: var(--accent);
+  }
+  .meta {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    font-size: 0.75rem;
+  }
+  .status::before {
+    content: '';
+    display: inline-block;
+    width: 6px;
+    height: 6px;
+    margin-right: 6px;
+    border-radius: 50%;
+    background: var(--muted);
+    vertical-align: middle;
+  }
+  .status.ongoing::before {
+    background: var(--accent);
+    box-shadow: 0 0 0 3px var(--accent-soft);
+  }
+  h3 {
+    font-size: var(--step-2);
+    transition: color 0.2s var(--ease);
+  }
+  p {
+    margin: 8px 0 12px;
+    color: var(--fg-soft);
+    max-width: var(--measure);
+  }
+  .tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+  .lane {
+    grid-column: 2;
+    position: relative;
+    height: 7px;
+    margin-top: 10px;
+    background: linear-gradient(var(--line-strong), var(--line-strong)) center / 100% 1px no-repeat;
+  }
+  .feature {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    border-radius: 1px;
+    background: var(--band-3);
+  }
+  .feature.ongoing {
+    background: var(--accent);
+    -webkit-mask-image: linear-gradient(90deg, #000 75%, transparent);
+    mask-image: linear-gradient(90deg, #000 75%, transparent);
+  }
+  @media (max-width: 640px) {
+    .track {
+      grid-template-columns: 1fr;
+    }
+    .meta {
+      flex-direction: row;
+      gap: 12px;
+    }
+    .lane {
+      grid-column: 1;
+    }
+  }
+</style>

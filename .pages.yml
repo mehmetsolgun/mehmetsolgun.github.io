@@ -1,0 +1,154 @@
+# Pages CMS yapılandırması — https://pagescms.org
+# app.pagescms.org adresinden GitHub hesabınla giriş yapıp bu repoyu seçtiğinde
+# aşağıdaki bölümler panelde düzenlenebilir hale gelir.
+
+media:
+  input: public/media
+  output: /media
+
+content:
+  # ---------- Profil (tek dosya) ----------
+  - name: profile
+    label: Profil
+    type: file
+    path: src/data/profile.json
+    format: json
+    fields:
+      - { name: name, label: Ad Soyad, type: string, required: true }
+      - { name: credentials, label: Unvan kısaltması (ör. DVM), type: string }
+      - { name: pubName, label: Yayınlardaki adın (ör. Soyad A), type: string, description: Yayın listesinde bu isim vurgulanır }
+      - { name: email, label: E-posta, type: string }
+      - { name: email_school, label: Okul e-postası, type: string }
+      - { name: photo, label: Fotoğraf, type: image }
+      - { name: og_image, label: Paylaşım görseli (JPG/PNG), type: image, description: Sosyal medyada link paylaşıldığında görünen görsel }
+      - { name: cv, label: CV (PDF), type: file }
+      - { name: title_tr, label: Unvan (TR), type: string }
+      - { name: title_en, label: Unvan (EN), type: string }
+      - { name: affiliation_tr, label: Kurum (TR), type: string }
+      - { name: affiliation_en, label: Kurum (EN), type: string }
+      - { name: intro_tr, label: Kısa tanıtım (TR), type: text }
+      - { name: intro_en, label: Kısa tanıtım (EN), type: text }
+      - { name: bio_tr, label: Biyografi (TR), type: text, description: Paragrafları boş satırla ayır }
+      - { name: bio_en, label: Biyografi (EN), type: text }
+      - name: interests
+        label: Araştırma ilgi alanları
+        type: object
+        list: true
+        fields:
+          - { name: title_tr, label: Başlık (TR), type: string }
+          - { name: title_en, label: Başlık (EN), type: string }
+          - { name: text_tr, label: Açıklama (TR), type: text }
+          - { name: text_en, label: Açıklama (EN), type: text }
+      - name: timeline
+        label: Eğitim ve deneyim
+        type: object
+        list: true
+        fields:
+          - name: track
+            label: Tür
+            type: select
+            options: { values: [education, experience] }
+          - { name: start, label: Başlangıç yılı, type: number }
+          - { name: end, label: Bitiş yılı (devam ediyorsa boş bırak), type: number }
+          - { name: title_tr, label: Başlık (TR), type: string }
+          - { name: title_en, label: Başlık (EN), type: string }
+          - { name: place_tr, label: Kurum (TR), type: string }
+          - { name: place_en, label: Kurum (EN), type: string }
+      - { name: skills_tr, label: Odak konular (TR), type: string, list: true }
+      - { name: skills_en, label: Odak konular (EN), type: string, list: true }
+      - name: links
+        label: Akademik bağlantılar
+        type: object
+        fields:
+          - { name: orcid, label: ORCID URL, type: string }
+          - { name: scholar, label: Google Scholar URL, type: string }
+          - { name: researchgate, label: ResearchGate URL, type: string }
+          - { name: dergipark, label: DergiPark URL, type: string }
+          - { name: linkedin, label: LinkedIn URL, type: string }
+          - { name: github, label: GitHub URL, type: string }
+
+  # ---------- Yayınlar ----------
+  - name: publications
+    label: Yayınlar
+    type: collection
+    path: src/content/publications
+    format: yaml
+    filename: '{primary}.yml'
+    view:
+      fields: [title, year, type]
+      default: { sort: year, order: desc }
+    fields:
+      - { name: title, label: Başlık, type: string, required: true }
+      - { name: authors, label: Yazarlar, type: string, list: true, required: true }
+      - { name: year, label: Yıl, type: number, required: true }
+      - { name: venue, label: Dergi / Kongre, type: string, required: true }
+      - name: type
+        label: Tür
+        type: select
+        options: { values: [article, conference, poster, preprint, thesis, chapter] }
+      - { name: volume, label: Cilt(Sayı), type: string }
+      - { name: pages, label: Sayfalar, type: string }
+      - { name: doi, label: DOI, type: string, description: 'Örn. 10.1000/xyz123' }
+      - { name: pmid, label: PubMed ID, type: string }
+      - { name: url, label: PDF bağlantısı, type: string }
+      - { name: featured, label: Ana sayfada göster, type: boolean }
+
+  # ---------- Blog ----------
+  - name: blog-tr
+    label: Blog (Türkçe)
+    type: collection
+    path: src/content/blog/tr
+    filename: '{primary}.md'
+    view:
+      fields: [title, date, draft]
+      default: { sort: date, order: desc }
+    fields: &blogFields
+      - { name: title, label: Başlık, type: string, required: true }
+      - { name: description, label: Özet, type: text }
+      - { name: date, label: Tarih, type: date, required: true }
+      - { name: updated, label: Güncelleme tarihi, type: date }
+      - { name: tags, label: Etiketler, type: string, list: true }
+      - { name: draft, label: Taslak (yayınlama), type: boolean }
+      - { name: body, label: İçerik (Markdown), type: code, options: { language: markdown } }
+
+  - name: blog-en
+    label: Blog (English)
+    type: collection
+    path: src/content/blog/en
+    filename: '{primary}.md'
+    view:
+      fields: [title, date, draft]
+      default: { sort: date, order: desc }
+    fields: *blogFields
+
+  # ---------- Projeler ----------
+  - name: projects-tr
+    label: Projeler (Türkçe)
+    type: collection
+    path: src/content/projects/tr
+    filename: '{primary}.md'
+    view:
+      fields: [title, status, start]
+    fields: &projectFields
+      - { name: title, label: Başlık, type: string, required: true }
+      - { name: summary, label: Özet, type: text, required: true }
+      - name: status
+        label: Durum
+        type: select
+        options: { values: [ongoing, completed] }
+      - { name: start, label: Başlangıç yılı, type: number, required: true }
+      - { name: end, label: Bitiş yılı, type: number }
+      - { name: tags, label: Etiketler, type: string, list: true }
+      - { name: funding, label: Destek / fon, type: string }
+      - { name: link, label: Dış bağlantı, type: string }
+      - { name: featured, label: Ana sayfada göster, type: boolean }
+      - { name: body, label: İçerik (Markdown), type: code, options: { language: markdown } }
+
+  - name: projects-en
+    label: Projects (English)
+    type: collection
+    path: src/content/projects/en
+    filename: '{primary}.md'
+    view:
+      fields: [title, status, start]
+    fields: *projectFields

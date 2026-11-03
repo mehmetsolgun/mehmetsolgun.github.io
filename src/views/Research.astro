@@ -1,0 +1,113 @@
+---
+import Base from '../layouts/Base.astro';
+import Locus from '../components/Locus.astro';
+import TrackCard from '../components/TrackCard.astro';
+import profile from '../data/profile.json';
+import { pick, useTranslations, type Lang } from '../i18n/ui';
+import { getProjects } from '../lib/content';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+const projects = await getProjects(lang);
+const now = new Date().getFullYear();
+const range: [number, number] = [Math.min(now - 4, ...projects.map((p) => p.data.start)), now + 1];
+const ongoing = projects.filter((p) => p.data.status === 'ongoing');
+const done = projects.filter((p) => p.data.status === 'completed');
+let n = 1;
+---
+
+<Base lang={lang} title={t('research.title')} chrom="chr3" pageLabel={t('nav.research').toLocaleLowerCase(lang)}>
+  <header class="wrap page-head" data-locus={t('research.title')}>
+    <h1>{t('research.title')}</h1>
+    <p>{t('research.lead')}</p>
+  </header>
+
+  <Locus n={n++} title={t('research.interests')}>
+    <ol class="interests">
+      {
+        profile.interests.map((it, i) => (
+          <li>
+            <span class="mono">{String(i + 1).padStart(2, '0')}</span>
+            <h3>{pick(it, 'title', lang)}</h3>
+            <p>{pick(it, 'text', lang)}</p>
+          </li>
+        ))
+      }
+    </ol>
+  </Locus>
+
+  {
+    ongoing.length > 0 && (
+      <Locus n={n++} title={t('status.ongoing')}>
+        {ongoing.map((p) => <TrackCard project={p} lang={lang} range={range} />)}
+      </Locus>
+    )
+  }
+  {
+    done.length > 0 && (
+      <Locus n={n++} title={t('status.completed')}>
+        {done.map((p) => <TrackCard project={p} lang={lang} range={range} />)}
+      </Locus>
+    )
+  }
+  {
+    projects.length === 0 && (
+      <Locus n={n++} title={t('research.projects')}>
+        <p class="empty mono">
+          <span aria-hidden="true">░░░░░░░░░░░░ </span>
+          {t('research.empty')}
+        </p>
+      </Locus>
+    )
+  }
+</Base>
+
+<style>
+  .interests {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  .interests li {
+    display: grid;
+    grid-template-columns: 120px minmax(0, 1fr);
+    gap: 4px 16px;
+    padding: 22px 0;
+    border-top: 1px solid var(--line);
+  }
+  .interests .mono {
+    grid-row: span 2;
+    color: var(--accent);
+    font-size: 0.75rem;
+    padding-top: 6px;
+  }
+  .interests h3 {
+    font-size: var(--step-2);
+  }
+  .interests p {
+    margin: 0;
+    max-width: var(--measure);
+    color: var(--fg-soft);
+  }
+  .empty {
+    margin: 0;
+    padding: 22px 0;
+    border-top: 1px solid var(--line);
+    color: var(--muted);
+    font-size: 0.8125rem;
+  }
+  .empty span {
+    color: var(--line-strong);
+  }
+  @media (max-width: 640px) {
+    .interests li {
+      grid-template-columns: 1fr;
+    }
+    .interests .mono {
+      grid-row: auto;
+    }
+  }
+</style>

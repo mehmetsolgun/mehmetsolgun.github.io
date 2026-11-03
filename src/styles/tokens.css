@@ -1,0 +1,79 @@
+/* Tasarım token'ları. Renkler tek yerden yönetilir. */
+:root {
+  --bg: #fafaf7;
+  --bg-raised: #ffffff;
+  --fg: #15171b;
+  --fg-soft: #3b3f46;
+  --muted: #6b7079;
+  --line: #e4e3dd;
+  --line-strong: #cfcdc5;
+  --accent: #0c8f7e;
+  --accent-soft: rgba(12, 143, 126, 0.1);
+  --mark: #d9484f; /* sadece ideogramdaki görüntü penceresi */
+  --band-0: #f1f0ea;
+  --band-1: #d8d6ce;
+  --band-2: #a9a7a0;
+  --band-3: #6f6d68;
+  --band-4: #2d2c2a;
+  --band-acen: #c46a6e;
+
+  --font-sans: 'Inter Variable', system-ui, sans-serif;
+  --font-serif: 'Source Serif 4 Variable', Georgia, serif;
+  --font-mono: 'JetBrains Mono Variable', ui-monospace, monospace;
+
+  --step--1: 0.8125rem;
+  --step-0: 1rem;
+  --step-1: 1.1875rem;
+  --step-2: 1.5rem;
+  --step-3: 2.125rem;
+  --step-4: clamp(2.5rem, 6vw, 4.25rem);
+
+  --measure: 68ch;
+  --wrap: 1120px;
+  --gutter: clamp(16px, 4vw, 40px);
+  --radius: 6px;
+  --ease: cubic-bezier(0.2, 0.7, 0.2, 1);
+  color-scheme: light;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) {
+    --bg: #0b0e12;
+    --bg-raised: #11151b;
+    --fg: #e7e9ec;
+    --fg-soft: #c1c5cc;
+    --muted: #8a909a;
+    --line: #1f242c;
+    --line-strong: #2e3540;
+    --accent: #43dcb9;
+    --accent-soft: rgba(67, 220, 185, 0.12);
+    --mark: #ff6b6f;
+    --band-0: #1a1f26;
+    --band-1: #2b313a;
+    --band-2: #4a525e;
+    --band-3: #7d8591;
+    --band-4: #c3c8d0;
+    --band-acen: #a85a60;
+    color-scheme: dark;
+  }
+}
+
+:root[data-theme='dark'] {
+  --bg: #0b0e12;
+  --bg-raised: #11151b;
+  --fg: #e7e9ec;
+  --fg-soft: #c1c5cc;
+  --muted: #8a909a;
+  --line: #1f242c;
+  --line-strong: #2e3540;
+  --accent: #43dcb9;
+  --accent-soft: rgba(67, 220, 185, 0.12);
+  --mark: #ff6b6f;
+  --band-0: #1a1f26;
+  --band-1: #2b313a;
+  --band-2: #4a525e;
+  --band-3: #7d8591;
+  --band-4: #c3c8d0;
+  --band-acen: #a85a60;
+  color-scheme: dark;
+}

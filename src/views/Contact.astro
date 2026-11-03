@@ -1,0 +1,85 @@
+---
+import Base from '../layouts/Base.astro';
+import profile from '../data/profile.json';
+import { pick, useTranslations, type Lang } from '../i18n/ui';
+import { profileLinks } from '../lib/links';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+const rows = [
+  ['email', profile.email, `mailto:${profile.email}`],
+  ['email.edu', profile.email_school, `mailto:${profile.email_school}`],
+  ...profileLinks.map((l) => [l.key, l.label, l.url]),
+].filter(([, label]) => label);
+---
+
+<Base lang={lang} title={t('contact.title')} chrom="chr6" pageLabel={t('nav.contact').toLocaleLowerCase(lang)}>
+  <header class="wrap page-head" data-locus={t('contact.title')}>
+    <h1>{t('contact.title')}</h1>
+    <p>{t('contact.lead')}</p>
+  </header>
+  <div class="wrap">
+    <table class="features">
+      <thead class="mono">
+        <tr><th>feature</th><th>value</th></tr>
+      </thead>
+      <tbody>
+        {
+          rows.map(([key, label, url]) => (
+            <tr>
+              <td class="mono">{key}</td>
+              <td><a href={url}>{label}</a></td>
+            </tr>
+          ))
+        }
+        <tr>
+          <td class="mono">affiliation</td>
+          <td>{pick(profile, 'affiliation', lang)}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</Base>
+
+<style>
+  .features {
+    width: 100%;
+    max-width: 760px;
+    border-collapse: collapse;
+  }
+  th {
+    padding: 0 0 10px;
+    font-weight: 400;
+    font-size: 0.6875rem;
+    color: var(--muted);
+    text-align: left;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+  td {
+    padding: 18px 0;
+    border-top: 1px solid var(--line);
+    vertical-align: baseline;
+  }
+  td.mono {
+    width: 160px;
+    color: var(--accent);
+  }
+  td a {
+    font-family: var(--font-serif);
+    font-size: var(--step-1);
+    text-decoration: none;
+    word-break: break-word;
+  }
+  td a:hover {
+    text-decoration: underline;
+  }
+  @media (max-width: 560px) {
+    td.mono {
+      width: 110px;
+    }
+  }
+</style>
