@@ -34,6 +34,16 @@ npm run build    # dist/ klasörüne üretir
 - Blog yazılarında `$...$` ve `$$...$$` ile LaTeX formül yazabilirsin. Görsel: `![açıklama](/media/dosya.jpg)`.
 - Taslak yazılar (`draft: true`) yalnızca `npm run dev` sırasında görünür. `blog/*/delta-delta-ct.md` böyle bir taslaktır; gözden geçirip `draft: false` yaptığında yayınlanır.
 
+## Günlük literatür yazıları (otomatik)
+
+Claude uygulamasındaki **"Günlük literatür blog yazıları"** zamanlanmış görevi her gün 13:00'te çalışır (uygulama kapalıysa açıldığında). Görev:
+
+1. Güncel literatürü (PubMed, bioRxiv) tarayıp ilgi alanlarından iki makale seçer.
+2. Her biri için 10–15 dakikalık, kaynakçalı TR + EN yazı yazar; tüm kaynakları PubMed/DOI üzerinden doğrular.
+3. Siteyi derler, `automation/literature-log.json` kaydını günceller ve `main`'e gönderir.
+
+Görevin talimatı: `C:\Users\mehme\.claude\scheduled-tasks\gunluk-blog-yazilari\SKILL.md`. Bir yazıyı yayından kaldırmak için panelde **Taslak** işaretle ya da dosyayı sil.
+
 ## Yayın
 
 `main` dalına her gönderimde `.github/workflows/deploy.yml` siteyi derleyip GitHub Pages'e yayınlar (Settings → Pages → Source: GitHub Actions).
