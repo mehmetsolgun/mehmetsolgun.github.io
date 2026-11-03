@@ -3,6 +3,7 @@ pair: merhaba
 title: "Hello: starting from the 5′ end"
 description: "Why this site exists, what I will share here, and the small biology jokes in its design."
 date: 2026-11-03
+updated: 2026-11-04
 tags: [announcement, phd]
 ---
 
@@ -12,10 +13,11 @@ Hello, I'm Mehmet. In 2026 I graduated from the Faculty of Veterinary Medicine a
 
 I will take notes as I learn and share them. My current focus areas are:
 
-- RNA biology and the regulation of transcription
-- Gene expression analysis with RT-qPCR
-- MicroRNAs and gene regulation
-- Bioinformatics tools and data analysis
+- MicroRNA biomarkers in milk, plasma and seminal plasma
+- Gene expression in reproductive biology and disease
+- Lipid metabolism and nutrigenomics
+- Oxidative stress and inflammation pathways
+- RT-qPCR and bioinformatics, which underpin all of the above
 
 Short summaries of papers I read, method notes and, over time, my own work will appear here.
 

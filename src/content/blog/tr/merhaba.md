@@ -3,6 +3,7 @@ pair: merhaba
 title: "Merhaba: 5′ ucundan başlarken"
 description: "Bu site neden var, burada neler paylaşacağım ve tasarımdaki küçük biyoloji şakaları."
 date: 2026-11-03
+updated: 2026-11-04
 tags: [duyuru, doktora]
 ---
 
@@ -12,10 +13,11 @@ Merhaba, ben Mehmet. 2026'da Hatay Mustafa Kemal Üniversitesi Veteriner Fakült
 
 Öğrendikçe not alacağım ve bu notları paylaşacağım. Odak konularım şimdilik şunlar:
 
-- RNA biyolojisi ve transkripsiyonun düzenlenmesi
-- RT-qPCR ile gen ifadesi analizi
-- MikroRNA'lar ve gen regülasyonu
-- Biyoinformatik araçlar ve veri analizi
+- Süt, plazma ve seminal plazmada mikroRNA biyobelirteçleri
+- Üreme biyolojisinde ve patolojilerinde gen ifadesi
+- Lipid metabolizması ve nutrigenomik
+- Oksidatif stres ve inflamasyon yolakları
+- Bunların hepsinin temeli olan RT-qPCR ve biyoinformatik
 
 Okuduğum makalelerden kısa özetler, yöntem notları ve zamanla kendi çalışmalarım da buraya eklenecek.
 

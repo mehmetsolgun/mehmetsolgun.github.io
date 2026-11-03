@@ -10,34 +10,34 @@
   "title_en": "Veterinarian · PhD Student in Molecular Biochemistry and Genetics",
   "affiliation_tr": "Hatay Mustafa Kemal Üniversitesi · Sağlık Bilimleri Enstitüsü",
   "affiliation_en": "Hatay Mustafa Kemal University · Institute of Health Sciences",
-  "intro_tr": "Veteriner hekimim ve Moleküler Biyokimya ve Genetik alanında doktora yapıyorum. RNA biyolojisi, transkripsiyon, RT-qPCR, mikroRNA'lar ve biyoinformatik üzerine çalışıyor, bu alanlarda kendimi geliştiriyorum.",
-  "intro_en": "I am a veterinarian doing a PhD in Molecular Biochemistry and Genetics. I study and build my skills in RNA biology, transcription, RT-qPCR, microRNAs and bioinformatics.",
-  "bio_tr": "2021–2026 yılları arasında Hatay Mustafa Kemal Üniversitesi Veteriner Fakültesinde okudum ve veteriner hekim olarak mezun oldum. 2026 yılında aynı üniversitenin Sağlık Bilimleri Enstitüsünde Moleküler Biyokimya ve Genetik doktora programına başladım.\n\nDoktoramın başındayım. Şu sıralar RNA biyolojisi ve transkripsiyonun düzenlenmesi, RT-qPCR ile gen ifadesi analizi, mikroRNA'ların gen regülasyonundaki rolü ve biyoinformatik araçlar üzerine yoğunlaşıyor ve bu alanlarda kendimi geliştiriyorum.\n\nBu sitede öğrendiklerimi, okuduklarımı ve ilerleyen dönemde yürüteceğim çalışmaları paylaşıyorum. İş birliği ya da sorularınız için iletişim sayfasından bana ulaşabilirsiniz.",
-  "bio_en": "I studied at the Faculty of Veterinary Medicine of Hatay Mustafa Kemal University from 2021 to 2026 and graduated as a veterinarian. In 2026 I began the PhD programme in Molecular Biochemistry and Genetics at the university's Institute of Health Sciences.\n\nI am at the start of my PhD. Right now I am focusing on RNA biology and the regulation of transcription, gene expression analysis with RT-qPCR, the role of microRNAs in gene regulation, and bioinformatics tools, and I am building my knowledge in these areas.\n\nOn this site I share what I learn, what I read and, in time, the research I carry out. For collaboration or questions, you can reach me through the contact page.",
+  "intro_tr": "Veteriner hekimim ve Moleküler Biyokimya ve Genetik alanında doktora yapıyorum. Hayvanlarda mikroRNA biyobelirteçleri, RT-qPCR ile gen ifadesi, lipid metabolizması ve oksidatif stres–inflamasyon yolakları üzerine çalışmayı öğreniyorum.",
+  "intro_en": "I am a veterinarian doing a PhD in Molecular Biochemistry and Genetics. I am learning to study microRNA biomarkers in animals, gene expression by RT-qPCR, lipid metabolism and oxidative stress–inflammation pathways.",
+  "bio_tr": "2021–2026 yılları arasında Hatay Mustafa Kemal Üniversitesi Veteriner Fakültesinde okudum ve veteriner hekim olarak mezun oldum. 2026 yılında aynı üniversitenin Sağlık Bilimleri Enstitüsünde Moleküler Biyokimya ve Genetik doktora programına başladım.\n\nDoktoramın başındayım ve danışmanlarımın veterinerlik genetiği alanında yürüttüğü çalışmaları öğreniyorum. Şu sıralar süt, plazma ve seminal plazmadaki mikroRNA'ların mastitis, erken gebelik ve fertilite için biyobelirteç olarak kullanılması; köpeklerde pyometra gibi üreme patolojilerinde gen ifadesi değişiklikleri; lipid metabolizmasıyla ilişkili genler ve oksidatif stres–inflamasyon yolakları üzerine yoğunlaşıyorum. Bu çalışmaların temelinde RT-qPCR ile gen ifadesi analizi ve biyoinformatik araçlar yer alıyor.\n\nBu sitede öğrendiklerimi, okuduklarımı ve ilerleyen dönemde yürüteceğim çalışmaları paylaşıyorum. İş birliği ya da sorularınız için iletişim sayfasından bana ulaşabilirsiniz.",
+  "bio_en": "I studied at the Faculty of Veterinary Medicine of Hatay Mustafa Kemal University from 2021 to 2026 and graduated as a veterinarian. In 2026 I began the PhD programme in Molecular Biochemistry and Genetics at the university's Institute of Health Sciences.\n\nI am at the start of my PhD and learning the research my advisors carry out in veterinary genetics. Right now I am focusing on microRNAs in milk, plasma and seminal plasma as biomarkers for mastitis, early pregnancy and fertility; gene expression changes in reproductive disorders such as canine pyometra; genes involved in lipid metabolism; and oxidative stress–inflammation pathways. Gene expression analysis by RT-qPCR and bioinformatics tools underpin all of this work.\n\nOn this site I share what I learn, what I read and, in time, the research I carry out. For collaboration or questions, you can reach me through the contact page.",
   "interests": [
     {
-      "title_tr": "RNA biyolojisi ve transkripsiyon",
-      "title_en": "RNA biology and transcription",
-      "text_tr": "Genetik bilginin DNA'dan RNA'ya aktarılması ve transkripsiyonun hücrede nasıl düzenlendiği.",
-      "text_en": "How genetic information is transferred from DNA to RNA and how transcription is regulated in the cell."
+      "title_tr": "MikroRNA biyobelirteçleri",
+      "title_en": "MicroRNA biomarkers",
+      "text_tr": "Süt, plazma ve seminal plazmadaki mikroRNA'ların mastitis, erken gebelik ve fertilite için tanısal potansiyeli.",
+      "text_en": "The diagnostic potential of microRNAs in milk, plasma and seminal plasma for mastitis, early pregnancy and fertility."
     },
     {
-      "title_tr": "RT-qPCR ile gen ifadesi",
-      "title_en": "Gene expression by RT-qPCR",
-      "text_tr": "Gen ifadesinin ters transkripsiyon ve gerçek zamanlı PCR ile nicel olarak ölçülmesi ve doğru yorumlanması.",
-      "text_en": "Quantifying gene expression with reverse transcription and real-time PCR, and interpreting it correctly."
+      "title_tr": "Üreme biyolojisinde gen ifadesi",
+      "title_en": "Gene expression in reproduction",
+      "text_tr": "Pyometra gibi üreme patolojilerinde inflamasyon, apoptoz, ferroptoz ve akuaporin genlerinin RT-qPCR ile ifade örüntüleri.",
+      "text_en": "Expression patterns of inflammation, apoptosis, ferroptosis and aquaporin genes in reproductive disorders such as pyometra, measured by RT-qPCR."
     },
     {
-      "title_tr": "MikroRNA'lar",
-      "title_en": "MicroRNAs",
-      "text_tr": "Küçük kodlamayan RNA'ların gen ifadesini transkripsiyon sonrası düzeyde nasıl düzenlediği.",
-      "text_en": "How small non-coding RNAs regulate gene expression at the post-transcriptional level."
+      "title_tr": "Lipid metabolizması ve nutrigenomik",
+      "title_en": "Lipid metabolism and nutrigenomics",
+      "text_tr": "Lipojenik genlerin (SCD, FASN, SREBF1, DGAT1) ifadesinin süt ve etteki yağ asidi profiliyle ilişkisi.",
+      "text_en": "How expression of lipogenic genes (SCD, FASN, SREBF1, DGAT1) relates to fatty acid profiles in milk and meat."
     },
     {
-      "title_tr": "Biyoinformatik",
-      "title_en": "Bioinformatics",
-      "text_tr": "Dizi ve gen ifadesi verilerinin hesaplamalı yöntemlerle analizi ve biyolojik olarak yorumlanması.",
-      "text_en": "Analysing sequence and gene expression data computationally and interpreting it biologically."
+      "title_tr": "Oksidatif stres ve inflamasyon",
+      "title_en": "Oxidative stress and inflammation",
+      "text_tr": "NRF2, COX-2, HO-1 ve sitokin sinyal yolaklarının hayvan sağlığında ve deneysel modellerde incelenmesi.",
+      "text_en": "Studying NRF2, COX-2, HO-1 and cytokine signalling pathways in animal health and experimental models."
     }
   ],
   "timeline": [
@@ -60,8 +60,28 @@
       "place_en": "Hatay Mustafa Kemal University, Institute of Health Sciences"
     }
   ],
-  "skills_tr": ["RNA biyolojisi", "Transkripsiyon", "RT-qPCR", "Gen ifadesi analizi", "miRNA", "Biyoinformatik"],
-  "skills_en": ["RNA biology", "Transcription", "RT-qPCR", "Gene expression analysis", "miRNA", "Bioinformatics"],
+  "skills_tr": [
+    "mikroRNA",
+    "RT-qPCR",
+    "Gen ifadesi analizi",
+    "Süt ve plazma biyobelirteçleri",
+    "Üreme biyolojisi",
+    "Lipid metabolizması",
+    "Oksidatif stres",
+    "RNA biyolojisi",
+    "Biyoinformatik"
+  ],
+  "skills_en": [
+    "microRNA",
+    "RT-qPCR",
+    "Gene expression analysis",
+    "Milk and plasma biomarkers",
+    "Reproductive biology",
+    "Lipid metabolism",
+    "Oxidative stress",
+    "RNA biology",
+    "Bioinformatics"
+  ],
   "links": {
     "orcid": "https://orcid.org/0009-0004-9847-4120",
     "researchgate": "https://www.researchgate.net/profile/Mehmet-Solgun",
