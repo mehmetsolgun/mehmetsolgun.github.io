@@ -1,4 +1,53 @@
 {
   "_note": "Günlük blog görevinin kaydı. Her yazı için ana makale ve kaynak DOI'leri tutulur; aynı makale tekrar işlenmez ve konular dönüşümlü seçilir.",
-  "posts": []
+  "posts": [
+    {
+      "date": "2026-11-04",
+      "pair": "ifnt-free-bovine-pregnancy",
+      "area": "reproduction-expression",
+      "title_tr": "İnek gebeliği interferon tau olmadan da başlayabiliyor",
+      "title_en": "Cattle pregnancy can start without interferon tau",
+      "primary": {
+        "doi": "10.1038/s41467-026-78446-4",
+        "pmid": "42844273",
+        "title": "Pregnancy establishment in cattle without embryonic interferon tau",
+        "journal": "Nature Communications",
+        "year": 2026,
+        "preprint": false
+      },
+      "references": [
+        "10.1038/s41467-026-78446-4",
+        "10.1093/biolre/ioag121",
+        "10.1038/330377a0",
+        "10.1186/1477-7827-2-49",
+        "10.1530/REP-17-0432",
+        "10.1073/pnas.0812722106"
+      ]
+    },
+    {
+      "date": "2026-11-04",
+      "pair": "rumen-mirna-acidosis-goats",
+      "area": "mirna-biomarkers",
+      "title_tr": "Keçilerde rumen asidozuna yatkınlığı mikrop ve miRNA imzası mı gösteriyor?",
+      "title_en": "Does a microbe–miRNA signature flag rumen acidosis risk in goats?",
+      "primary": {
+        "doi": "10.3168/jds.2025-27860",
+        "pmid": "42617855",
+        "title": "Multi-omics identifies microbial and microRNA biomarkers from rumen fluid for susceptibility to subacute ruminal acidosis in dairy goats",
+        "journal": "Journal of Dairy Science",
+        "year": 2026,
+        "preprint": false
+      },
+      "references": [
+        "10.3168/jds.2025-27860",
+        "10.1016/j.tvjl.2007.12.016",
+        "10.1016/s0092-8674(04)00045-5",
+        "10.1016/j.cell.2009.01.002",
+        "10.1038/cr.2008.282",
+        "10.1073/pnas.0804549105",
+        "10.1016/j.chom.2015.12.005",
+        "10.3168/jds.2026-28753"
+      ]
+    }
+  ]
 }
