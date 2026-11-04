@@ -48,6 +48,52 @@
         "10.1016/j.chom.2015.12.005",
         "10.3168/jds.2026-28753"
       ]
+    },
+    {
+      "date": "2026-11-04",
+      "pair": "bvdv-lipid-droplets-energy",
+      "area": "lipid-nutrigenomics",
+      "title_tr": "Virüs yağ damlacıklarını önce doldurdu, sonra mitokondriye boşalttı",
+      "title_en": "The virus that filled the fat droplets, then drained them into mitochondria",
+      "primary": {
+        "doi": "10.1186/s13567-026-01834-7",
+        "pmid": "42763408",
+        "title": "Bovine viral diarrhea virus (BVDV) relies on cellular lipid droplet biogenesis and lipolysis to provide energy for viral replication",
+        "journal": "Veterinary Research",
+        "year": 2026,
+        "preprint": false
+      },
+      "references": [
+        "10.1186/s13567-026-01834-7",
+        "10.1016/j.tvjl.2013.07.024",
+        "10.1038/s41580-018-0085-z",
+        "10.1016/j.cmet.2011.12.018",
+        "10.1038/ncb1631",
+        "10.1371/journal.ppat.1000632",
+        "10.1016/j.cmet.2018.03.003"
+      ]
+    },
+    {
+      "date": "2026-11-04",
+      "pair": "heat-stress-klebsiella-mammary-cells",
+      "area": "oxidative-inflammation",
+      "title_tr": "Yaz mastitisi hücre kültüründe: 42 °C'de Klebsiella'ya karşı yüzde 20 canlılık",
+      "title_en": "Summer mastitis in a dish: 20% survival when 42 °C meets Klebsiella",
+      "primary": {
+        "doi": "10.1080/01652176.2026.2747449",
+        "pmid": "42962078",
+        "title": "Heat stress enhances Klebsiella pneumoniae-induced cellular injury and impairs milk fat synthesis in bovine mammary epithelial cells",
+        "journal": "Veterinary Quarterly",
+        "year": 2026,
+        "preprint": false
+      },
+      "references": [
+        "10.1080/01652176.2026.2747449",
+        "10.1007/s10911-011-9236-y",
+        "10.1038/sigtrans.2017.23",
+        "10.1038/cr.2010.178",
+        "10.1146/annurev-animal-031412-103644"
+      ]
     }
   ]
 }
