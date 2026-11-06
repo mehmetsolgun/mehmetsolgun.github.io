@@ -94,6 +94,54 @@
         "10.1038/cr.2010.178",
         "10.1146/annurev-animal-031412-103644"
       ]
+    },
+    {
+      "date": "2026-11-06",
+      "pair": "bull-sperm-vesicles-mirna",
+      "area": "mirna-biomarkers",
+      "title_tr": "Boğa meni plazması vezikülleri spermi değiştiriyor; sorumlu miRNA görünmüyor",
+      "title_en": "Bull seminal vesicles shift sperm motion, yet miRNA cargo stays silent",
+      "primary": {
+        "doi": "10.1016/j.anireprosci.2026.108344",
+        "pmid": "42826596",
+        "title": "Seminal plasma extracellular vesicles modulate low-fertility bull sperm function beyond miRNA cargo transfer",
+        "journal": "Animal Reproduction Science",
+        "year": 2026,
+        "preprint": false
+      },
+      "references": [
+        "10.1016/j.anireprosci.2026.108344",
+        "10.3389/fcell.2024.1473825",
+        "10.1016/j.theriogenology.2020.11.015",
+        "10.1002/mrd.22856",
+        "10.1002/mrd.70138",
+        "10.3390/ani16182953"
+      ]
+    },
+    {
+      "date": "2026-11-06",
+      "pair": "canine-esr1-mir18a-reporter",
+      "area": "methods",
+      "title_tr": "miR-18a ve miR-19a köpek ESR1 3'UTR raportörünü susturdu, hücre hatları ise karışık konuşuyor",
+      "title_en": "miR-18a silences a canine ESR1 reporter, but the cell lines disagree",
+      "primary": {
+        "doi": "10.3390/vetsci13101071",
+        "pmid": "42944166",
+        "title": "MicroRNA Regulation of the Estrogen Receptor Alpha 3'UTR in Canine Mammary Tumor (CMT28) Cells",
+        "journal": "Veterinary Sciences",
+        "year": 2026,
+        "preprint": false
+      },
+      "references": [
+        "10.3390/vetsci13101071",
+        "10.1373/clinchem.2008.112797",
+        "10.1016/j.ymeth.2010.01.026",
+        "10.1007/s11357-024-01260-7",
+        "10.3390/cells13100821",
+        "10.3390/ijms23115989",
+        "10.1615/JEnvironPatholToxicolOncol.2025056717",
+        "10.3389/fcell.2024.1473825"
+      ]
     }
   ]
 }
