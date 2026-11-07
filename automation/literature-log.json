@@ -142,6 +142,51 @@
         "10.1615/JEnvironPatholToxicolOncol.2025056717",
         "10.3389/fcell.2024.1473825"
       ]
+    },
+    {
+      "date": "2026-11-07",
+      "pair": "baicalin-milk-fatty-acids",
+      "area": "lipid-nutrigenomics",
+      "title_tr": "Altı inek ve baicalin: sütte oleik asit arttı, rumene bakılmadı",
+      "title_en": "Six cows on baicalin: more oleic acid in the milk, no look at the rumen",
+      "primary": {
+        "doi": "10.1128/spectrum.00836-26",
+        "pmid": "42841648",
+        "title": "Dietary baicalin supplementation increases the milk unsaturated fatty acid proportion through modulating milk metabolism and the microbiome in dairy cows",
+        "journal": "Microbiology Spectrum",
+        "year": 2026,
+        "preprint": false
+      },
+      "references": [
+        "10.1016/j.foodres.2022.111767",
+        "10.3390/antiox11030485",
+        "10.3390/ani11092643",
+        "10.1016/j.aninu.2023.03.007",
+        "10.3168/jds.2009-2111"
+      ]
+    },
+    {
+      "date": "2026-11-07",
+      "pair": "mare-placenta-mmp-methylation",
+      "area": "reproduction-expression",
+      "title_tr": "Kısrak plasentasında MMP2 transkripti boynuza göre değişti, protein değişmedi",
+      "title_en": "In the mare placenta, MMP2 transcript differs between horns and the protein does not",
+      "primary": {
+        "doi": "10.1016/j.rvsc.2026.106372",
+        "pmid": "42636551",
+        "title": "Extracellular matrix and microvascularization regulatory genes in the mare placenta",
+        "journal": "Research in Veterinary Science",
+        "year": 2026,
+        "preprint": false
+      },
+      "references": [
+        "10.1016/j.theriogenology.2024.08.031",
+        "10.1038/s41598-024-84250-1",
+        "10.1262/jrd.2025-103",
+        "10.1038/nrg3230",
+        "10.1186/s12917-026-05691-6",
+        "10.18632/oncotarget.497"
+      ]
     }
   ]
 }
