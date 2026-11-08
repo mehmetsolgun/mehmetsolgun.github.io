@@ -187,6 +187,54 @@
         "10.1186/s12917-026-05691-6",
         "10.18632/oncotarget.497"
       ]
+    },
+    {
+      "date": "2026-11-08",
+      "pair": "transgenic-cow-milk-mirna",
+      "area": "mirna-biomarkers",
+      "title_tr": "Sütte yabancı miRNA: transgenik inek, sindirim tüpü ve altmış mikrogramlık hesap",
+      "title_en": "Foreign miRNAs in milk: a transgenic cow, a digestion rig and a 60-microgram problem",
+      "primary": {
+        "doi": "10.1096/fj.202601184R",
+        "pmid": "42690611",
+        "title": "Investigating Dietary microRNA Stability and Function Using a Transgenic Milk Model With Unique microRNA Sequences",
+        "journal": "FASEB Journal",
+        "year": 2026,
+        "preprint": false
+      },
+      "references": [
+        "10.1096/fj.202601184R",
+        "10.1073/pnas.1210057109",
+        "10.3945/jn.116.237651",
+        "10.1080/20013078.2017.1401897",
+        "10.3168/jds.2019-16880",
+        "10.1074/jbc.M115.676734",
+        "10.1038/cr.2011.158",
+        "10.1038/nbt.2737",
+        "10.1038/s41598-019-51092-1"
+      ]
+    },
+    {
+      "date": "2026-11-08",
+      "pair": "canine-periodontal-biomarkers",
+      "area": "oxidative-inflammation",
+      "title_tr": "Köpeklerde plak skoru ile CRP arasında 0,893: fazla iyi bir korelasyon mu?",
+      "title_en": "A 0.893 correlation between plaque score and CRP in dogs: too good to be true?",
+      "primary": {
+        "doi": "10.1016/j.vas.2026.100882",
+        "pmid": "42835556",
+        "title": "Clinical periodontal indices are associated with systemic inflammatory and oxidative stress biomarkers in dogs with periodontal disease",
+        "journal": "Veterinary and Animal Science",
+        "year": 2026,
+        "preprint": false
+      },
+      "references": [
+        "10.1016/j.vas.2026.100882",
+        "10.2460/javma.238.5.601",
+        "10.1155/ijod/4652796",
+        "10.3390/vetsci11030099",
+        "10.1177/08987564251380724"
+      ]
     }
   ]
 }
