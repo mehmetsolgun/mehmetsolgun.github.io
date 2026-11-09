@@ -235,6 +235,50 @@
         "10.3390/vetsci11030099",
         "10.1177/08987564251380724"
       ]
+    },
+    {
+      "date": "2026-11-09",
+      "pair": "hamster-blood-reference-genes",
+      "area": "methods",
+      "title_tr": "Hamster kanında β-aktin dört grupta sonuncu çıktı, TNF-α yaklaşık on kat şişti",
+      "title_en": "Beta-actin ranked last in four hamster blood groups and moved TNF-α about tenfold",
+      "primary": {
+        "doi": "10.1007/s11033-026-12980-8",
+        "pmid": "42909732",
+        "title": "Identification and validation of stable reference genes for RT-qPCR analysis in blood samples from golden Syrian hamsters under different immunological conditions",
+        "journal": "Molecular Biology Reports",
+        "year": 2026,
+        "preprint": false
+      },
+      "references": [
+        "10.1186/gb-2002-3-7-research0034",
+        "10.1158/0008-5472.CAN-04-0496",
+        "10.1373/clinchem.2008.112797",
+        "10.1093/clinchem/hvaf043",
+        "10.1016/j.jim.2026.114132",
+        "10.1007/s11033-026-12851-2"
+      ]
+    },
+    {
+      "date": "2026-11-09",
+      "pair": "sheep-fth1-granulosa-ferroptosis",
+      "area": "reproduction-expression",
+      "title_tr": "Koyun granüloza hücrelerinde erastin hasarı önce geldi, FTH1 plazmidi sonra",
+      "title_en": "In sheep granulosa cells the erastin came first and the FTH1 plasmid second",
+      "primary": {
+        "doi": "10.3390/biom16101507",
+        "pmid": "42939761",
+        "title": "Ferritin Heavy Chain 1 Sustains Steroid Hormone Synthesis in Sheep Granulosa Cells by Suppressing Erastin-Induced Ferroptosis",
+        "journal": "Biomolecules",
+        "year": 2026,
+        "preprint": false
+      },
+      "references": [
+        "10.1016/j.cell.2012.03.042",
+        "10.1080/15548627.2016.1187366",
+        "10.1016/j.psj.2024.103912",
+        "10.1016/j.jep.2025.120057"
+      ]
     }
   ]
 }
