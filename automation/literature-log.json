@@ -279,6 +279,29 @@
         "10.1016/j.psj.2024.103912",
         "10.1016/j.jep.2025.120057"
       ]
+    },
+    {
+      "date": "2026-11-10",
+      "pair": "sheep-biosolids-methylation-lineage",
+      "area": "reproduction-expression",
+      "title_tr": "Arıtma çamurunun metilasyon izi koyun torunlarına uzandı, ama baba soyundan ayrılamadı",
+      "title_en": "Sludge-pasture methylation marks reach sheep grandchildren, but pedigree drowns them out",
+      "primary": {
+        "doi": "10.1093/pnasnexus/pgag338",
+        "pmid": "42997478",
+        "title": "Sex-specific intergenerational epigenetic responses to real-world chemical mixture exposure in an outbred sheep model",
+        "journal": "PNAS Nexus",
+        "year": 2026,
+        "preprint": false
+      },
+      "references": [
+        "10.1016/j.cell.2014.02.045",
+        "10.1126/science.aad7977",
+        "10.1095/biolreprod.116.142190",
+        "10.1016/j.envpol.2025.125630",
+        "10.1093/biolre/ioaf053",
+        "10.1016/j.etap.2025.104669"
+      ]
     }
   ]
 }
