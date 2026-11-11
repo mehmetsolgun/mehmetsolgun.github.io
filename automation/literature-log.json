@@ -302,6 +302,54 @@
         "10.1093/biolre/ioaf053",
         "10.1016/j.etap.2025.104669"
       ]
+    },
+    {
+      "date": "2026-11-11",
+      "pair": "hazelnut-skin-calf-diarrhea",
+      "area": "oxidative-inflammation",
+      "title_tr": "Fındık kabuğu ekstraktı ishalli buzağıları kurtarmadı, ama dışkıyı kırmızıya boyadı",
+      "title_en": "Hazelnut skin extract did not rescue calves with diarrhoea, but it did dye their faeces red",
+      "primary": {
+        "doi": "10.1080/01652176.2026.2691428",
+        "pmid": "42873768",
+        "title": "Effects on health and antioxidant status of oral supplementation of hazelnut skin extract in dairy calves with neonatal diarrhea: a randomized clinical trial in hospitalized patients",
+        "journal": "Veterinary Quarterly",
+        "year": 2026,
+        "preprint": false
+      },
+      "references": [
+        "10.1080/01652176.2026.2691428",
+        "10.1186/s12917-018-1549-2",
+        "10.1016/j.cvfa.2014.11.004",
+        "10.3390/ani11082221",
+        "10.3389/fmicb.2024.1507537"
+      ]
+    },
+    {
+      "date": "2026-11-11",
+      "pair": "glycitin-gpr3-goat-milk-fat",
+      "area": "lipid-nutrigenomics",
+      "title_tr": "Soya izoflavonu glycitin keçi meme hücresinde yağ biriktirdi, GPR3 susunca bu iz soldu",
+      "title_en": "A soy isoflavone made goat mammary cells store fat, and silencing GPR3 faded the signal",
+      "primary": {
+        "doi": "10.1021/acs.jafc.6c00383",
+        "pmid": "42916029",
+        "title": "Glycitin Targets the Orphan Receptor GPR3 to Promote Milk Fat Synthesis in Goat Mammary Epithelial Cells",
+        "journal": "Journal of Agricultural and Food Chemistry",
+        "year": 2026,
+        "preprint": false
+      },
+      "references": [
+        "10.1021/acs.jafc.6c00383",
+        "10.1016/j.molpha.2026.100146",
+        "10.1007/s13105-026-01235-6",
+        "10.5713/ab.24.0792",
+        "10.1186/s40104-025-01315-5",
+        "10.3390/ani16182886",
+        "10.3168/jds.2026-28943",
+        "10.1016/j.cell.2014.09.035",
+        "10.3168/jdsc.2025-0813"
+      ]
     }
   ]
 }
