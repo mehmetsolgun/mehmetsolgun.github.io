@@ -350,6 +350,54 @@
         "10.1016/j.cell.2014.09.035",
         "10.3168/jdsc.2025-0813"
       ]
+    },
+    {
+      "date": "2026-11-13",
+      "pair": "beef-cow-pus-filled-uterus",
+      "area": "reproduction-expression",
+      "title_tr": "Yumurtalığı normal, rahmi irin dolu: Angus ineklerinde endometriyumun 954 geni değişti",
+      "title_en": "Normal ovaries, a uterus full of pus: 954 genes shifted in Angus cow endometrium",
+      "primary": {
+        "doi": "10.3389/fvets.2026.1916650",
+        "pmid": "42903093",
+        "title": "Uterine infection-induced transcriptomic changes in the bovine endometrium",
+        "journal": "Frontiers in Veterinary Science",
+        "year": 2026,
+        "preprint": false
+      },
+      "references": [
+        "10.3389/fvets.2026.1916650",
+        "10.1016/j.theriogenology.2005.08.021",
+        "10.1095/biolreprod.109.077370",
+        "10.1186/s12864-016-2513-9",
+        "10.1080/10495398.2023.2174876",
+        "10.3168/jds.2016-12365"
+      ]
+    },
+    {
+      "date": "2026-11-13",
+      "pair": "milk-mirna-electrode-mastitis",
+      "area": "mirna-biomarkers",
+      "title_tr": "Sütteki miRNA'yı PCR'sız okuyan elektrot: dizilemedeki en büyük sinyal en zayıf sensörü verdi",
+      "title_en": "An electrode that reads milk miRNA without PCR, and the sequencing signal that did not carry over",
+      "primary": {
+        "doi": "10.1021/acsmeasuresciau.6c00060",
+        "pmid": "42630754",
+        "title": "Amplification-Free Detection of MiRNA Signatures in Milk: A Noninvasive Sensing Approach for Early Diagnosis of Bovine Mastitis",
+        "journal": "ACS Measurement Science Au",
+        "year": 2026,
+        "preprint": false
+      },
+      "references": [
+        "10.1021/acsmeasuresciau.6c00060",
+        "10.1038/s41598-022-09214-9",
+        "10.1186/s12864-022-08377-z",
+        "10.3168/jds.2023-23726",
+        "10.1186/s13567-023-01206-5",
+        "10.3390/biom15020235",
+        "10.1111/asj.13959",
+        "10.1186/s40104-025-01152-6"
+      ]
     }
   ]
 }
