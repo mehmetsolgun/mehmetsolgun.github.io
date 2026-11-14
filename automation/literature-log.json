@@ -398,6 +398,59 @@
         "10.1111/asj.13959",
         "10.1186/s40104-025-01152-6"
       ]
+    },
+    {
+      "date": "2026-11-14",
+      "pair": "butyrate-bhb-mammary-lipogenic-genes",
+      "area": "lipid-nutrigenomics",
+      "title_tr": "Bütirat SREBF1c'yi 25 kat artırdı, BHB ona dokunmadan FASN'ı 16 kata çıkardı",
+      "title_en": "Butyrate lifted SREBF1c 25-fold; BHB left it alone and still sent FASN up 16-fold",
+      "primary": {
+        "doi": "10.3168/jdsc.2026-1091",
+        "pmid": "43016487",
+        "title": "Effects of increasing acetate, butyrate, and β-hydroxybutyrate on expression of lipogenic genes in bovine mammary epithelial cell culture",
+        "journal": "JDS Communications",
+        "year": 2026,
+        "preprint": false
+      },
+      "references": [
+        "10.3945/jn.116.245001",
+        "10.3168/jds.2018-16024",
+        "10.1038/s41598-018-36941-9",
+        "10.1111/asj.12420",
+        "10.3168/jds.2020-18246",
+        "10.1007/s11626-020-00538-2",
+        "10.3389/fnut.2023.1098715",
+        "10.1017/S1751731108003133"
+      ]
+    },
+    {
+      "date": "2026-11-14",
+      "pair": "ivermectin-equine-leukocytes-cytokines",
+      "area": "oxidative-inflammation",
+      "title_tr": "Ivermektin at lökositlerinde IL-1β ve IL-6 mRNA'sını artırdı, ama dozu atta görülmez",
+      "title_en": "Ivermectin raised IL-1β and IL-6 mRNA in horse leukocytes at a dose no horse will ever see",
+      "primary": {
+        "doi": "10.1016/j.vas.2026.100894",
+        "pmid": "42927118",
+        "title": "Ivermectin enhances the transcription of pro-inflammatory cytokines in equine leukocytes stimulated with LPS and nigericin",
+        "journal": "Veterinary and Animal Science",
+        "year": 2026,
+        "preprint": false
+      },
+      "references": [
+        "10.1007/s00011-008-8007-8",
+        "10.1016/j.biopha.2022.113706",
+        "10.1631/jzus.B2200385",
+        "10.1111/all.13118",
+        "10.1007/s11259-020-09772-1",
+        "10.1038/s41577-019-0165-0",
+        "10.1186/s12917-016-0706-8",
+        "10.1006/meth.2001.1262",
+        "10.1186/gb-2002-3-7-research0034",
+        "10.3389/fvets.2018.00208",
+        "10.3390/ani15131992"
+      ]
     }
   ]
 }
